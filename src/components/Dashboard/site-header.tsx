@@ -15,7 +15,12 @@ export function SiteHeader() {
         <h1 className="text-base font-medium">Documents</h1>
         <div className="ml-auto flex items-center gap-2">
           <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
-            <Link href="/" className="dark:text-foreground">
+            <Link
+              href="https://github.com/starti-coins/starti-coins-frontend"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="dark:text-foreground"
+            >
               GitHub
             </Link>
           </Button>
