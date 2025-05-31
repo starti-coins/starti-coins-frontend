@@ -1,10 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
-import { CheckIcon } from "lucide-react"
+import * as React from "react";
+import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
+import { CheckIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
+import { motion } from "motion/react";
 
 function Checkbox({
   className,
@@ -21,12 +22,22 @@ function Checkbox({
     >
       <CheckboxPrimitive.Indicator
         data-slot="checkbox-indicator"
-        className="flex items-center justify-center text-current transition-none"
+        className="flex items-center justify-center text-current"
+        asChild
       >
-        <CheckIcon className="size-3.5" />
+        <motion.div
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{
+            scale: [0.5, 1.25, 1],
+            opacity: 1,
+          }}
+          transition={{ duration: 0.3 }}
+        >
+          <CheckIcon className="size-3.5" />
+        </motion.div>
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
-  )
+  );
 }
 
-export { Checkbox }
+export { Checkbox };
