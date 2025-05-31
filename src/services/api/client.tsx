@@ -1,19 +1,16 @@
 import axios, { AxiosError } from "axios";
-import applyCaseMiddleware from "axios-case-converter";
 
 import AppError from "@/helpers/error/app-error";
 import { ServerError } from "@/lib/types/server-errors";
 
-export const APIClient = applyCaseMiddleware(
-  axios.create({
-    baseURL: `${process.env.WEB_API_URL ?? "/"}/api`,
-    withCredentials: true,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    timeout: 15_000,
-  })
-);
+const APIClient = axios.create({
+  baseURL: `${process.env.WEB_API_URL ?? "/"}/api`,
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  timeout: 15_000,
+});
 
 APIClient.interceptors.response.use(
   (response) => response,
@@ -65,3 +62,5 @@ APIClient.interceptors.response.use(
     return Promise.reject(formattedError);
   }
 );
+
+export default APIClient;
