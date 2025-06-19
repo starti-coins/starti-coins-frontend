@@ -15,6 +15,8 @@
   --primary-foreground: oklch(0.9819 0.0181 155.8263);
   --secondary: oklch(0 0 0);
   --secondary-foreground: oklch(1 0 0);
+  --tertiary: oklch(35.268% 0.05483 194.996);
+  --tertiary-foreground: oklch(0.9819 0.0181 155.8263);
   --muted: oklch(0.9674 0.0013 286.3752);
   --muted-foreground: oklch(0.552 0.0153 285.8863);
   --accent: oklch(0.9674 0.0013 286.3752);
@@ -111,6 +113,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-tertiary: var(--tertiary);
+  --color-tertiary-foreground: var(--tertiary-foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
