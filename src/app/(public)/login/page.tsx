@@ -6,7 +6,7 @@ export default function LoginPage() {
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="bg-tertiary relative hidden lg:block">
         <Image
-          src="/img/login/login-bg.jpg"
+          src="/img/login-bg.jpg"
           alt="Image"
           fill
           priority
@@ -15,7 +15,7 @@ export default function LoginPage() {
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <Image
-            src={"/img/login/logo-outlined.svg"}
+            src={"/img/logo-outlined.svg"}
             width={700}
             height={687}
             alt="Logo"
@@ -27,7 +27,7 @@ export default function LoginPage() {
           <a href="#" className="flex items-center gap-2 font-medium text-3xl">
             <div className="bg-tertiary text-primary-foreground flex size-8 items-center justify-center rounded-md">
               <Image
-                src="/img/login/logo.png"
+                src="/img/logo.png"
                 alt="Logo"
                 width={24}
                 height={24}
