@@ -4,7 +4,7 @@ import Auth from "@/interfaces/auth";
 
 import APIClient from "../api/client";
 
-class AuthAPI implements Auth {
+class AuthService implements Auth {
   async login(email: string, password: string): Promise<boolean> {
     await APIClient.post("/auth/login", {
       email,
@@ -48,4 +48,4 @@ class AuthAPI implements Auth {
   }
 }
 
-export default AuthAPI;
+export default AuthService;
