@@ -1,6 +1,8 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
+import { Button } from "./button";
+import { Eye, EyeClosed } from "lucide-react";
 
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (
@@ -15,7 +17,85 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
-export { Input }
+type AdornedInputProps =
+  | (React.ComponentProps<"input"> & {
+      startAdornment?: React.ReactNode;
+      endAdornment?: React.ReactNode;
+      passwordAdornment?: undefined;
+    })
+  | (React.ComponentProps<"input"> & {
+      startAdornment?: React.ReactNode;
+      endAdornment?: undefined;
+      passwordAdornment?: boolean;
+    });
+
+function AdornedInput({
+  className,
+  type,
+  startAdornment,
+  endAdornment,
+  passwordAdornment,
+  ...props
+}: AdornedInputProps) {
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClick = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  return (
+    <div className="flex items-center gap-2 relative">
+      {startAdornment && (
+        <span className="text-muted-foreground">{startAdornment}</span>
+      )}
+      <Input
+        className={cn("flex-1", className)}
+        type={passwordAdornment ? (showPassword ? "text" : "password") : type}
+        {...props}
+      />
+      {passwordAdornment && (
+        <Button
+          type="button"
+          variant="ghost"
+          className="text-muted-foreground absolute right-0.5"
+          onClick={handleClick}
+        >
+          {showPassword ? (
+            <Eye className="size-4" />
+          ) : (
+            <EyeClosed className="size-4" />
+          )}
+        </Button>
+      )}
+      {endAdornment && (
+        <span className="text-muted-foreground ">{endAdornment}</span>
+      )}
+    </div>
+  );
+}
+
+{
+  /* <div className="relative">
+            <Input id="password" type="password" required />
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="absolute right-2 top-0.5 px-2 py-1 text-xs"
+              tabIndex={-1}
+              onClick={() => {
+                const input = document.getElementById("password");
+                if (input) {
+                  input.type = input.type === "password" ? "text" : "password";
+                }
+              }}
+            >
+              <Eye />
+            </Button>
+          </div> */
+}
+
+export { Input, AdornedInput };

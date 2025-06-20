@@ -1,7 +1,10 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/@ui/button";
-import { Input } from "@/components/@ui/input";
+import { AdornedInput, Input } from "@/components/@ui/input";
 import { Label } from "@/components/@ui/label";
+import Link from "next/link";
 
 export function LoginForm({
   className,
@@ -41,7 +44,13 @@ export function LoginForm({
               Esqueceu sua senha?
             </a>
           </div>
-          <Input id="password" type="password" required />
+          <AdornedInput
+            id="password"
+            type="password"
+            placeholder="Digite sua senha"
+            required
+            passwordAdornment
+          />
         </div>
         <Button
           type="submit"
@@ -52,9 +61,9 @@ export function LoginForm({
       </div>
       <div className="text-center text-sm">
         Ainda não tem uma conta?{" "}
-        <a href="/register" className="underline underline-offset-4">
+        <Link href="/register" className="underline underline-offset-4">
           Cadastre-se
-        </a>
+        </Link>
       </div>
     </form>
   );
