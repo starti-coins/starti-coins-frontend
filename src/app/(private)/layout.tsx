@@ -1,5 +1,5 @@
 import { SidebarInset, SidebarProvider } from "@/components/@ui/sidebar";
-import { AppSidebar } from "@/components/Dashboard/app-sidebar";
+import { AppSidebar } from "@/components/dashboard/app-sidebar";
 
 export default function PrivateLayout({
   children,
