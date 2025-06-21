@@ -2,9 +2,10 @@ import axios, { AxiosError } from "axios";
 
 import AppError from "@/helpers/error/app-error";
 import { ServerError } from "@/lib/types/server-errors";
+import { env } from "@/env";
 
 const APIClient = axios.create({
-  baseURL: `${process.env.WEB_API_URL ?? "/"}/api`,
+  baseURL: `${env.NEXT_PUBLIC_WEB_API_URL ?? "/"}/api`,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",

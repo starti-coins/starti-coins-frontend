@@ -60,7 +60,7 @@ function AdornedInput({
         <Button
           type="button"
           variant="ghost"
-          className="text-muted-foreground absolute right-0.5"
+          className="size-6 text-muted-foreground absolute right-2 rounded-sm"
           onClick={handleClick}
         >
           {showPassword ? (

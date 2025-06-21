@@ -2,7 +2,7 @@ import { Account } from "@/models/account";
 
 interface Auth {
   login(email: string, password: string): Promise<boolean>;
-  findProfile(): Promise<Account>;
+  register(account: Account): Promise<boolean>;
   forgotPassword(email: string): Promise<boolean>;
   verifyPasswordToken(token: string): Promise<boolean>;
   resetPassword(token: string, newPassword: string): Promise<boolean>;

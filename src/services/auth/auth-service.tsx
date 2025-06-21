@@ -1,5 +1,4 @@
 import { Account } from "@/models/account";
-import StorageHelper from "@/helpers/storage/storage-helper";
 import Auth from "@/interfaces/auth";
 
 import APIClient from "../api/client";
@@ -17,12 +16,10 @@ class AuthService implements Auth {
     await APIClient.post("/auth/logout");
   }
 
-  async findProfile(): Promise<Account> {
-    const response = await APIClient.get<Account>("/accounts/profile");
-    const profile = response.data;
-    StorageHelper.setJSON("account", profile);
+  async register(account: Account): Promise<boolean> {
+    await APIClient.post("/auth/register", account);
 
-    return profile;
+    return true;
   }
 
   async forgotPassword(_email: string): Promise<boolean> {
