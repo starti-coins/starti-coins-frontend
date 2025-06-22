@@ -1,14 +1,17 @@
 import { Account } from "@/models/account";
 import Auth from "@/interfaces/auth";
-
 import APIClient from "../api/client";
+import StorageHelper from "@/helpers/storage/storage-helper";
 
 class AuthService implements Auth {
   async login(email: string, password: string): Promise<boolean> {
-    await APIClient.post("/auth/login", {
+    const response = await APIClient.post("/auth/login", {
       email,
       password,
     });
+
+    StorageHelper.setJSON("account", response.data, true);
+
     return true;
   }
 
