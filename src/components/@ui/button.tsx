@@ -61,10 +61,10 @@ function Button({
       )}
       {...props}
     >
-      <>
+      <div>
         {loading && <Spinner size="small" className={loadingClassName} />}
         {!loading && props.children}
-      </>
+      </div>
     </Comp>
   );
 }

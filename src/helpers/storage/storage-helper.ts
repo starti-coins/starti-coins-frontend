@@ -1,9 +1,10 @@
-type StorageKeys = "account" | "token";
+type StorageKeys = "account" | "token" | "sidebar_state";
 
 class StorageHelper {
   private static readonly keys: Record<StorageKeys, string> = {
     account: "starticoins@USER_DATA",
     token: "starticoins@AUTH_TOKEN",
+    sidebar_state: "starticoins@SIDEBAR_STATE",
   };
 
   static set(
@@ -48,6 +49,10 @@ class StorageHelper {
     }
     data = JSON.parse(data) as T;
     return data;
+  }
+
+  static getKeys(): typeof StorageHelper.keys {
+    return StorageHelper.keys;
   }
 
   static clear(): void {

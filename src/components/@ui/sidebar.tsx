@@ -24,8 +24,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/@ui/tooltip";
+import StorageHelper from "@/helpers/storage/storage-helper";
 
-const SIDEBAR_COOKIE_NAME = "sidebar_state";
+const storageKeys = StorageHelper.getKeys();
+
+const SIDEBAR_COOKIE_NAME = storageKeys.sidebar_state;
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = "16rem";
 const SIDEBAR_WIDTH_MOBILE = "18rem";
@@ -84,6 +87,7 @@ function SidebarProvider({
 
       // This sets the cookie to keep the sidebar state.
       document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
+      StorageHelper.set("sidebar_state", openState.toString());
     },
     [setOpenProp, open]
   );
