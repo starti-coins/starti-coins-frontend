@@ -55,7 +55,7 @@ class StorageHelper {
     key: StorageKeys,
     value: string,
     days: number = 1,
-    secure: boolean = true
+    secure: boolean = false
   ): void {
     const expires = new Date(
       Date.now() + days * 24 * 60 * 60 * 1000
