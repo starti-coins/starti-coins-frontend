@@ -258,6 +258,8 @@ export function RegisterForm({
             )}
           />
           <Button
+            disabled={form.formState.isSubmitting}
+            loading={form.formState.isSubmitting}
             type="submit"
             className="w-full bg-gray-800 hover:bg-gray-800/90 mt-4"
           >

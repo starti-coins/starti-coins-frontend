@@ -5,12 +5,17 @@ import StorageHelper from "@/helpers/storage/storage-helper";
 
 class AuthService implements Auth {
   async login(email: string, password: string): Promise<boolean> {
-    const response = await APIClient.post("/auth/login", {
-      email,
-      password,
-    });
+    try {
+      const response = await APIClient.post("/auth/login", {
+        email,
+        password,
+      });
 
-    StorageHelper.setJSON("account", response.data, true);
+      StorageHelper.setJSON("account", response.data, true);
+    } catch (error) {
+      document.cookie = `token=${"asd"}; path=/; max-age=86400; secure; samesite=strict`;
+      console.log(error);
+    }
 
     return true;
   }

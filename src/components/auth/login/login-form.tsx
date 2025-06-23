@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
@@ -29,7 +28,6 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"form">) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -38,16 +36,14 @@ export function LoginForm({
 
   const handleLogin = async (formData: LoginFormData) => {
     try {
-      setLoading(true);
-
       const authService = new AuthService();
+
       await authService.login(formData.email, formData.password);
 
       router.refresh();
     } catch (error) {
       notification.error(error);
     } finally {
-      setLoading(false);
       form.reset();
     }
   };
@@ -117,9 +113,9 @@ export function LoginForm({
             )}
           />
           <Button
+            disabled={form.formState.isSubmitting}
+            loading={form.formState.isSubmitting}
             type="submit"
-            disabled={loading}
-            loading={loading}
             className="w-full bg-gray-800 hover:bg-gray-800/90 mt-4"
           >
             Login
