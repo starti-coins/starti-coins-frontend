@@ -47,7 +47,7 @@ export function ResetPasswordForm({
         }
       );
     } catch (error) {
-      notification.formatedError(error);
+      notification.formattedError(error);
     } finally {
       form.reset();
     }

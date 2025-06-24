@@ -8,7 +8,7 @@ import { ExternalToast, toast } from "sonner";
  *
  * @param error - O erro a ser exibido. Espera-se que seja do tipo `AppError` ou contenha uma propriedade `message`.
  */
-function formatedError(error: unknown, config?: ExternalToast) {
+function formattedError(error: unknown, config?: ExternalToast) {
   toast.error((error as AppError).message, config);
 }
 
@@ -31,7 +31,7 @@ function debug(message: string) {
  * Must be used within a `Client Component`.
  */
 export const notification = {
-  formatedError,
+  formattedError,
   debug,
   ...toast,
 };

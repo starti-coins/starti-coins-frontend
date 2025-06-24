@@ -41,7 +41,7 @@ export function ForgotPasswordForm({
         "Se o email informado estiver cadastrado, você receberá um link para redefinir sua senha."
       );
     } catch (error) {
-      notification.error(error);
+      notification.formattedError(error);
     } finally {
       form.reset();
     }

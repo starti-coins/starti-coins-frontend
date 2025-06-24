@@ -55,7 +55,7 @@ export function RegisterForm({
         router.push("/login");
       }, 1500);
     } catch (error) {
-      notification.error(error);
+      notification.formattedError(error);
     } finally {
       form.reset();
     }

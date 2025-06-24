@@ -42,7 +42,7 @@ export function LoginForm({
 
       router.refresh();
     } catch (error) {
-      notification.error(error);
+      notification.formattedError(error);
     } finally {
       form.reset();
     }
@@ -91,12 +91,12 @@ export function LoginForm({
               <FormItem>
                 <div className="flex items-center">
                   <FormLabel htmlFor="password">Senha</FormLabel>
-                  <a
+                  <Link
                     href="/forgot-password"
                     className="ml-auto text-sm underline-offset-4 hover:underline"
                   >
                     Esqueceu sua senha?
-                  </a>
+                  </Link>
                 </div>
                 <FormControl>
                   <AdornedInput
