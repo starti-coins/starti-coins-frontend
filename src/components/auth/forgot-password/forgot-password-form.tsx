@@ -3,16 +3,15 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  ResetPasswordFormData,
-  resetPasswordSchema,
-  resetPasswordDefaultValues,
-} from "./schema/reset-password-schema";
+  ForgotPasswordFormData,
+  forgotPasswordSchema,
+  forgotPasswordDefaultValues,
+} from "./schema/forgot-password-schema";
 import AuthService from "@/services/auth/auth-service";
 import { Button } from "@/components/@ui/button";
-import { AdornedInput, Input } from "@/components/@ui/input";
+import { Input } from "@/components/@ui/input";
 import {
   Form,
   FormControl,
@@ -23,31 +22,26 @@ import {
 } from "@/components/@ui/form";
 import { notification } from "@/hooks/use-notification";
 
-export function ResetPasswordForm({
+export function ForgotPasswordForm({
   className,
-  token,
   ...props
-}: React.ComponentProps<"form"> & { token: string }) {
-  const router = useRouter();
-  const form = useForm<ResetPasswordFormData>({
-    resolver: zodResolver(resetPasswordSchema),
-    defaultValues: resetPasswordDefaultValues,
+}: React.ComponentProps<"form">) {
+  const form = useForm<ForgotPasswordFormData>({
+    resolver: zodResolver(forgotPasswordSchema),
+    defaultValues: forgotPasswordDefaultValues,
   });
 
-  const handleResetPassword = async (formData: ResetPasswordFormData) => {
+  const handleForgotPassword = async (formData: ForgotPasswordFormData) => {
     try {
       const authService = new AuthService();
 
-      await authService.resetPassword(token, formData.password);
+      await authService.forgotPassword(formData.email);
 
       notification.success(
-        "Senha redefinida com sucesso. Você será redirecionado",
-        {
-          onAutoClose: () => router.push("/login"),
-        }
+        "Se o email informado estiver cadastrado, você receberá um link para redefinir sua senha."
       );
     } catch (error) {
-      notification.formatedError(error);
+      notification.error(error);
     } finally {
       form.reset();
     }
@@ -60,48 +54,28 @@ export function ResetPasswordForm({
           "flex flex-col gap-6 px-8 py-12 rounded-md border w-full max-w-md",
           className
         )}
-        onSubmit={form.handleSubmit(handleResetPassword)}
+        onSubmit={form.handleSubmit(handleForgotPassword)}
         {...props}
       >
         <div className="flex flex-col gap-4">
-          <h1 className="text-3xl font-bold">Redefinir senha</h1>
+          <h1 className="text-3xl font-bold">Recuperar senha</h1>
           <p className="text-muted-foreground text-sm">
-            Crie sua nova senha. Utilize uma senha robusta.
+            Informe seu email institucional cadastrado anteriormente. Você
+            receberá um link para redefinir sua senha.
           </p>
         </div>
         <div className="grid gap-6">
           <FormField
             control={form.control}
-            name="password"
+            name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="email">Senha</FormLabel>
-                <FormControl>
-                  <AdornedInput
-                    id="password"
-                    type="password"
-                    placeholder="Digite sua senha"
-                    required
-                    passwordAdornment
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="verifyPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor="verifyPassword">Confirmar senha</FormLabel>
+                <FormLabel htmlFor="email">Email</FormLabel>
                 <FormControl>
                   <Input
-                    id="verifyPassword"
-                    type="password"
-                    placeholder="Confirme sua senha"
+                    id="email"
+                    type="text"
+                    placeholder="m@aluno.ifal.edu.br"
                     required
                     {...field}
                   />
@@ -116,7 +90,7 @@ export function ResetPasswordForm({
             type="submit"
             className="w-full bg-gray-800 hover:bg-gray-800/90 mt-4"
           >
-            Redefinir senha
+            Enviar link de recuperação
           </Button>
         </div>
         <div className="text-center text-sm">

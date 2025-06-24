@@ -5,7 +5,7 @@ export const loginSchema = z.object({
   password: z.string().min(8, "Senha deve ter pelo menos 8 caracteres"),
 });
 
-export const loginDefaultValues = {
+export const loginDefaultValues: LoginFormData = {
   email: "",
   password: "",
 };

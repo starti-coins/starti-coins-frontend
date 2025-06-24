@@ -1,16 +1,42 @@
 import { MiddlewareConfig, NextRequest, NextResponse } from "next/server";
 
-const publicRoutes = [
+type PublicRoute =
+  | {
+      path: string;
+      action: "redirect" | "allow";
+      allowSubdomain: boolean;
+      subdoaminDepth: number;
+    }
+  | {
+      path: string;
+      action: "redirect" | "allow";
+      allowSubdomain?: undefined;
+      subdoaminDepth?: undefined;
+    };
+
+const publicRoutes: PublicRoute[] = [
   { path: "/login", action: "redirect" },
   { path: "/register", action: "redirect" },
-  { path: "/forgot-password", action: "redirect" },
-] as const;
+  {
+    path: "/forgot-password",
+    action: "allow",
+    allowSubdomain: true,
+    subdoaminDepth: 1,
+  },
+];
 
+const SPLITED_PATH_LENGTH_WITHOUT_SUBDOMAIN = 2;
 const redirectWheNotAuthenticated = "/login";
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  const publicRoute = publicRoutes.find((route) => route.path === path);
+  const publicRoute = publicRoutes.find((route) =>
+    route.allowSubdomain &&
+    path.split("/").length <=
+      route.subdoaminDepth + SPLITED_PATH_LENGTH_WITHOUT_SUBDOMAIN
+      ? path.startsWith(route.path)
+      : route.path === path
+  );
   const isAuthenticated = request.cookies.get("token");
 
   if (publicRoute && isAuthenticated && publicRoute.action === "redirect") {

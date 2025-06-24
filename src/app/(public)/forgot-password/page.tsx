@@ -1,10 +1,10 @@
 import AuthSider from "@/components/auth";
-import { ResetPasswordForm } from "@/components/auth/reset-password/reset-password-form";
+import { ForgotPasswordForm } from "@/components/auth/forgot-password/forgot-password-form";
 
 function ForgotPasswordPage() {
   return (
     <AuthSider>
-      <ResetPasswordForm />
+      <ForgotPasswordForm />
     </AuthSider>
   );
 }
