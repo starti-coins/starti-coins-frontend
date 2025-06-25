@@ -15,7 +15,10 @@ export const registerSchema = z
       .refine((cpf: string) => !cpf.match(/[^\d]+/g), "Apenas números")
       .refine((cpf: string) => isValidCPF(cpf), "CPF inválido"),
     rg: z.string().min(8, "RG inválido").max(12, "RG inválido"),
-    password: z.string().min(8, "Senha deve ter pelo menos 8 caracteres"),
+    password: z
+      .string()
+      .min(8, "Senha deve ter pelo menos 8 caracteres")
+      .max(12, "Senha deve ter no máximo 12 caracteres"),
     verifyPassword: z.string().min(1, "Confirmação de senha é obrigatória"),
   })
   .refine((data) => data.password === data.verifyPassword, {

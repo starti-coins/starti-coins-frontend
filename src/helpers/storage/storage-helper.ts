@@ -133,6 +133,15 @@ class StorageHelper {
   }
 
   /**
+   * Removes a cookie by setting its expiration date to a past date.
+   *
+   * @param key - The key of the cookie to remove, corresponding to a value from the `StorageKeys` enum.
+   */
+  static removeCookie(key: StorageKeys): void {
+    document.cookie = `${key}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; samesite=strict`;
+  }
+
+  /**
    * Clears all data from both localStorage and sessionStorage.
    *
    * This method removes all key/value pairs from the browser's localStorage and sessionStorage,

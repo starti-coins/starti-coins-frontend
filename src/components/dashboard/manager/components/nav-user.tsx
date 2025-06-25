@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  IconCreditCard,
   IconDotsVertical,
   IconLogout,
   IconNotification,
@@ -24,6 +23,10 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/@ui/sidebar";
+import StorageHelper from "@/helpers/storage/storage-helper";
+import { useRouter } from "next/navigation";
+import AuthService from "@/services/auth/auth-service";
+import { notification } from "@/hooks/use-notification";
 
 export function NavUser({
   user,
@@ -34,7 +37,22 @@ export function NavUser({
     avatar: string;
   };
 }) {
+  const router = useRouter();
   const { isMobile } = useSidebar();
+
+  const handleLogout = async () => {
+    try {
+      const authService = new AuthService();
+
+      await authService.logout().catch(() => true);
+
+      StorageHelper.removeCookie("token");
+
+      router.refresh();
+    } catch (error) {
+      notification.formattedError(error);
+    }
+  };
 
   return (
     <SidebarMenu>
@@ -82,21 +100,17 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <IconUserCircle />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <IconCreditCard />
-                Billing
+                Conta
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <IconNotification />
-                Notifications
+                Notificações
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <IconLogout />
-              Log out
+              Sair
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

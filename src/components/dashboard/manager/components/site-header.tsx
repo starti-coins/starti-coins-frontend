@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { Button } from "@/components/@ui/button";
 import { Separator } from "@/components/@ui/separator";
 import {
   SidebarGroup,
@@ -13,6 +12,7 @@ import {
 import StorageHelper from "@/helpers/storage/storage-helper";
 import { Coins, PlusCircle, Search } from "lucide-react";
 import { Label } from "@/components/@ui/label";
+import { CreateCommandMenu } from "./create-commnad-menu";
 
 export function SiteHeader() {
   const { setOpen } = useSidebar();
@@ -35,11 +35,9 @@ export function SiteHeader() {
         />
 
         <div className="flex justify-between items-center w-full gap-2 mx-0 md:mx-2 lg:mx-4">
-          <div>
-            <Button className="flex" asChild size="sm">
-              <PlusCircle /> Criar
-            </Button>
-          </div>
+          <CreateCommandMenu asChild size="sm" className="flex">
+            <PlusCircle /> Criar
+          </CreateCommandMenu>
 
           <SidebarGroup className="py-0 max-w-[220px] md:max-w-[320px] lg:max-w-[480px]">
             <SidebarGroupContent className="relative">
