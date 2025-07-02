@@ -1,5 +1,7 @@
+import CollaboratorDashboard from "@/components/dashboard/collaborator/collaborator-dashboard";
+
 function CollaboratorDashboardPage() {
-  return <div>CollaboratorDashboardPage</div>;
+  return <CollaboratorDashboard />;
 }
 
 export default CollaboratorDashboardPage;
