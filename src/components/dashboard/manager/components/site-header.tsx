@@ -12,16 +12,17 @@ import {
 import StorageHelper from "@/helpers/storage/storage-helper";
 import { Coins, PlusCircle, Search } from "lucide-react";
 import { Label } from "@/components/@ui/label";
-import { CreateCommandMenu } from "./create-commnad-menu";
+import { CreateCommandMenu } from "./create-command-menu";
 
 export function SiteHeader() {
   const { setOpen } = useSidebar();
 
   useEffect(() => {
-    const sidebarShouldBeOpened = StorageHelper.get("sidebar_state") === "true";
+    const sidebarShouldBeClosed =
+      StorageHelper.get("sidebar_state") === "false";
 
-    if (sidebarShouldBeOpened) {
-      setOpen(true);
+    if (sidebarShouldBeClosed) {
+      setOpen(false);
     }
   });
 

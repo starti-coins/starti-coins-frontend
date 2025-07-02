@@ -13,39 +13,23 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/@ui/sidebar";
-import { ChartArea, ClipboardList, FileBadge, House } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/",
-      icon: House,
-    },
-    {
-      title: "Tarefas criadas",
-      url: "#",
-      icon: ClipboardList,
-    },
-    {
-      title: "Projetos",
-      url: "#",
-      icon: FileBadge,
-    },
-    {
-      title: "Relatórios",
-      url: "#",
-      icon: ChartArea,
-    },
-  ],
+const user = {
+  name: "shadcn",
+  email: "m@example.com",
+  avatar: "/avatars/shadcn.jpg",
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
+  sidebarItems: {
+    title: string;
+    url: string;
+    icon: LucideIcon;
+  }[];
+};
+
+export function AppSidebar({ sidebarItems, ...props }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -74,10 +58,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={sidebarItems} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );
