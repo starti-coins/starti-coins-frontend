@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useCoins } from "@/contexts/coins/hooks";
 import { Separator } from "@/components/@ui/separator";
 import {
   SidebarGroup,
@@ -15,6 +16,7 @@ import { Label } from "@/components/@ui/label";
 
 export function SiteHeader() {
   const { setOpen } = useSidebar();
+  const coins = useCoins();
 
   useEffect(() => {
     const sidebarShouldBeClosed =
@@ -51,7 +53,7 @@ export function SiteHeader() {
           </SidebarGroup>
 
           <div className="flex items-center gap-2">
-            <span className="text-coin font-bold md:text-xl">127</span>
+            <span className="text-coin font-bold md:text-xl">{coins}</span>
             <Coins className="text-coin" />
           </div>
         </div>

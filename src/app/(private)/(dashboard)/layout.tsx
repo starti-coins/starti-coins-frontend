@@ -1,3 +1,5 @@
+import PrivateProvider from "@/contexts/private-provider";
+
 export default function PrivateLayout({
   collaborator,
   manager,
@@ -5,7 +7,9 @@ export default function PrivateLayout({
   collaborator: React.ReactNode;
   manager: React.ReactNode;
 }>) {
-  const isManager = true;
+  const isManager = false;
 
-  return <div>{isManager ? manager : collaborator}</div>;
+  return (
+    <PrivateProvider>{isManager ? manager : collaborator}</PrivateProvider>
+  );
 }
