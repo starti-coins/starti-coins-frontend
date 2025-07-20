@@ -18,7 +18,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/@ui/table";
-import { Trophy, Medal, Award, Download } from "lucide-react";
+import {
+  Trophy,
+  Medal,
+  Award,
+  Download,
+  ChevronsUpDown,
+  ChevronUp,
+  ChevronDown,
+} from "lucide-react";
+import { useMemo, useState } from "react";
 
 // Dados mockados para o leaderboard
 const leaderboardData = [
@@ -96,6 +105,14 @@ const leaderboardData = [
   },
 ];
 
+type SortField = "position" | "name" | "tasksCompleted" | "hoursWorked";
+type SortDirection = "asc" | "desc";
+
+interface SortConfig {
+  field: SortField;
+  direction: SortDirection;
+}
+
 const getPositionIcon = (position: number) => {
   switch (position) {
     case 1:
@@ -132,6 +149,73 @@ const getPeriodColor = (period: string) => {
 };
 
 export default function MemberLeaderboard() {
+  const [sortConfig, setSortConfig] = useState<SortConfig>({
+    field: "position",
+    direction: "asc",
+  });
+
+  const sortedData = useMemo(() => {
+    const sorted = [...leaderboardData].sort((a, b) => {
+      const { field, direction } = sortConfig;
+      let aValue: string | number;
+      let bValue: string | number;
+
+      switch (field) {
+        case "name":
+          aValue = a.name.toLowerCase();
+          bValue = b.name.toLowerCase();
+          break;
+        case "tasksCompleted":
+          aValue = a.tasksCompleted;
+          bValue = b.tasksCompleted;
+          break;
+        case "hoursWorked":
+          aValue = a.hoursWorked;
+          bValue = b.hoursWorked;
+          break;
+        case "position":
+        default:
+          aValue = a.position;
+          bValue = b.position;
+          break;
+      }
+
+      if (aValue < bValue) return direction === "asc" ? -1 : 1;
+      if (aValue > bValue) return direction === "asc" ? 1 : -1;
+      return 0;
+    });
+
+    // Recalcular posições se não estiver ordenando por posição
+    if (sortConfig.field !== "position") {
+      return sorted.map((user, index) => ({
+        ...user,
+        currentPosition: index + 1,
+      }));
+    }
+
+    return sorted.map((user) => ({ ...user, currentPosition: user.position }));
+  }, [sortConfig]);
+
+  const handleSort = (field: SortField) => {
+    setSortConfig((prevConfig) => ({
+      field,
+      direction:
+        prevConfig.field === field && prevConfig.direction === "asc"
+          ? "desc"
+          : "asc",
+    }));
+  };
+
+  const getSortIcon = (field: SortField) => {
+    if (sortConfig.field !== field) {
+      return <ChevronsUpDown className="h-4 w-4 text-muted-foreground" />;
+    }
+    return sortConfig.direction === "asc" ? (
+      <ChevronUp className="h-4 w-4" />
+    ) : (
+      <ChevronDown className="h-4 w-4" />
+    );
+  };
   return (
     <div className="container">
       <Card>
@@ -203,16 +287,32 @@ export default function MemberLeaderboard() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[80px]">Posição</TableHead>
+                  <TableHead className="w-[80px]">
+                    <button
+                      onClick={() => handleSort("position")}
+                      className="flex items-center gap-1 hover:text-foreground transition-colors"
+                    >
+                      Posição
+                      {getSortIcon("position")}
+                    </button>
+                  </TableHead>
                   <TableHead>Usuário</TableHead>
                   <TableHead className="text-center">Tarefas</TableHead>
                   <TableHead className="text-center">Time</TableHead>
                   <TableHead className="text-center">Período</TableHead>
-                  <TableHead className="text-right">Horas</TableHead>
+                  <TableHead className="text-right">
+                    <button
+                      onClick={() => handleSort("hoursWorked")}
+                      className="flex items-center gap-1 hover:text-foreground transition-colors"
+                    >
+                      Horas
+                      {getSortIcon("hoursWorked")}
+                    </button>
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {leaderboardData.map((user) => (
+                {sortedData.map((user) => (
                   <TableRow
                     key={user.position}
                     className={user.position <= 3 ? "bg-muted/50" : ""}
