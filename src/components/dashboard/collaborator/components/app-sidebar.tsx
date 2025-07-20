@@ -14,6 +14,7 @@ import {
   SidebarMenuItem,
 } from "@/components/@ui/sidebar";
 import { LucideIcon } from "lucide-react";
+import Link from "next/link";
 
 const user = {
   name: "shadcn",
@@ -39,7 +40,7 @@ export function AppSidebar({ sidebarItems, ...props }: AppSidebarProps) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              <Link href="/">
                 <div className="pr-1">
                   <div className="bg-tertiary text-primary-foreground flex !size-5 items-center justify-center rounded-md">
                     <Image
@@ -52,7 +53,7 @@ export function AppSidebar({ sidebarItems, ...props }: AppSidebarProps) {
                   </div>
                 </div>
                 <span className="text-base font-semibold">Starti Coins</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

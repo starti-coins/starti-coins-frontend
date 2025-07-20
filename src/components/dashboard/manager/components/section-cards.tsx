@@ -4,7 +4,7 @@ import Statistics from "../../shared/statistics";
 
 export function SectionCards() {
   return (
-    <div className="grid grid-cols-1 gap-4 px-6 lg:grid-cols-2 lg:gap-12">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-12">
       <Statistics.Container title="Tarefas">
         <Statistics.Item
           title="Atribuídas"

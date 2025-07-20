@@ -1,7 +1,7 @@
-import React from "react";
+import CreatedTasks from "@/components/dashboard/manager/pages/created-tasks";
 
 function TarefasCriadas() {
-  return <div>TarefasCriadas</div>;
+  return <CreatedTasks />;
 }
 
 export default TarefasCriadas;

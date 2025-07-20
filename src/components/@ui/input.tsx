@@ -77,25 +77,4 @@ function AdornedInput({
   );
 }
 
-{
-  /* <div className="relative">
-            <Input id="password" type="password" required />
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="absolute right-2 top-0.5 px-2 py-1 text-xs"
-              tabIndex={-1}
-              onClick={() => {
-                const input = document.getElementById("password");
-                if (input) {
-                  input.type = input.type === "password" ? "text" : "password";
-                }
-              }}
-            >
-              <Eye />
-            </Button>
-          </div> */
-}
-
 export { Input, AdornedInput };

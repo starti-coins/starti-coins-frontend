@@ -1,6 +1,6 @@
 "use client";
 
-import { ChartArea, ClipboardList, FileBadge, House } from "lucide-react";
+import { ClipboardList, House } from "lucide-react";
 
 export const sidebarItems = [
   {
@@ -13,19 +13,19 @@ export const sidebarItems = [
     url: "/minhas-tarefas",
     icon: ClipboardList,
   },
-  {
-    title: "Projetos",
-    url: "/projetos",
-    icon: FileBadge,
-  },
-  {
-    title: "Loja de prêmios",
-    url: "/loja",
-    icon: ClipboardList,
-  },
-  {
-    title: "Histórico de compras",
-    url: "/historico",
-    icon: ChartArea,
-  },
+  // {
+  //   title: "Projetos",
+  //   url: "/projetos",
+  //   icon: FileBadge,
+  // },
+  // {
+  //   title: "Loja de prêmios",
+  //   url: "/loja",
+  //   icon: ClipboardList,
+  // },
+  // {
+  //   title: "Histórico de compras",
+  //   url: "/historico",
+  //   icon: ChartArea,
+  // },
 ];
