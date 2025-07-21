@@ -1,5 +1,5 @@
 import { SidebarInset, SidebarProvider } from "@/components/@ui/sidebar";
-import { AppSidebar } from "@/modules/manager/components/app-sidebar";
+import { AppSidebar } from "@/modules/shared/sidebar";
 import { SiteHeader } from "@/modules/manager/components/site-header";
 import { sidebarItems } from "@/modules/manager/routes/manager-routes";
 

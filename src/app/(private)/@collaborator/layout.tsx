@@ -1,5 +1,5 @@
 import { SidebarInset, SidebarProvider } from "@/components/@ui/sidebar";
-import { AppSidebar } from "@/modules/collaborator/components/app-sidebar";
+import { AppSidebar } from "@/modules/shared/sidebar";
 import { SiteHeader } from "@/modules/collaborator/components/site-header";
 import { sidebarItems } from "@/modules/collaborator/routes/collaborator-routes";
 

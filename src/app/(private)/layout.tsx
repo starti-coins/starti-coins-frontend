@@ -7,7 +7,7 @@ export default function PrivateLayout({
   collaborator: React.ReactNode;
   manager: React.ReactNode;
 }>) {
-  const isManager = false;
+  const isManager = true;
 
   return (
     <PrivateProvider>{isManager ? manager : collaborator}</PrivateProvider>

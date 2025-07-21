@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import { NavMain, NavUser } from "@/modules/shared/navbar";
+import { NavUser, NavMain } from "./components/navbar";
 import {
   Sidebar,
   SidebarContent,
@@ -13,11 +12,12 @@ import {
   SidebarMenuItem,
 } from "@/components/@ui/sidebar";
 import { LucideIcon } from "lucide-react";
+import Link from "next/link";
 
 const user = {
   name: "shadcn",
   email: "m@example.com",
-  avatar: "/avatars/shadcn.jpg",
+  avatar: "",
 };
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
