@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { UserPlus } from "lucide-react";
-import { IconNotification, IconUserCircle } from "@tabler/icons-react";
+import { IconUserCircle } from "@tabler/icons-react";
 import {
   CommandDialog,
   CommandEmpty,
@@ -20,14 +22,14 @@ import {
   TooltipTrigger,
 } from "@/components/@ui/tooltip";
 import { useSuperKey } from "@/hooks/use-super-key";
-import Link from "next/link";
 
 type CommandMenuProps = React.ComponentProps<typeof Button> &
   React.PropsWithChildren;
 
 export function CreateCommandMenu({ children, ...rest }: CommandMenuProps) {
-  const superKey = useSuperKey();
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const superKey = useSuperKey();
 
   const handleClickButton = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -94,12 +96,15 @@ export function CreateCommandMenu({ children, ...rest }: CommandMenuProps) {
           </CommandGroup>
           <CommandSeparator />
           <CommandGroup heading="Navegar">
-            <CommandItem>
-              <IconNotification />
-              <span>Notificações</span>
-            </CommandItem>
-            <CommandItem>
-              <Link href="/perfil" className="w-full flex items-center gap-2">
+            <CommandItem
+              disabled={pathname === "/perfil"}
+              onSelect={handleClickButton}
+              className="!p-0"
+            >
+              <Link
+                href="/perfil"
+                className="w-full flex items-center gap-2 px-2 py-3"
+              >
                 <IconUserCircle />
                 <span>Conta</span>
               </Link>
