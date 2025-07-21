@@ -5,5 +5,4 @@ export interface Account {
   period: string;
   cpf: string;
   rg: string;
-  password: string;
 }

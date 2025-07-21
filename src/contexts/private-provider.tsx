@@ -1,7 +1,12 @@
+import AccountProvider from "./account/provider";
 import CoinsProvider from "./coins/provider";
 
 const PrivateProvider = ({ children }: { children: React.ReactNode }) => {
-  return <CoinsProvider>{children}</CoinsProvider>;
+  return (
+    <AccountProvider>
+      <CoinsProvider>{children}</CoinsProvider>
+    </AccountProvider>
+  );
 };
 
 export default PrivateProvider;

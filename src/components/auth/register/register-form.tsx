@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   registerDefaultValues,
@@ -13,15 +13,6 @@ import AuthService from "@/services/auth/auth-service";
 import { Button } from "@/components/@ui/button";
 import { AdornedInput, Input } from "@/components/@ui/input";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "../../@ui/select";
-import {
   Form,
   FormControl,
   FormField,
@@ -31,6 +22,7 @@ import {
 } from "@/components/@ui/form";
 import { notification } from "@/hooks/use-notification";
 import { useRouter } from "next/navigation";
+import PeriodSelect from "@/components/@ui/period-select";
 
 export function RegisterForm({
   className,
@@ -138,42 +130,9 @@ export function RegisterForm({
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="period"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="period">Período atual</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    value={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="w-full min-w-0">
-                        <SelectValue
-                          placeholder="Selecione"
-                          className="truncate"
-                        />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Períodos</SelectLabel>
-                        <SelectItem value="1">1º</SelectItem>
-                        <SelectItem value="2">2º</SelectItem>
-                        <SelectItem value="3">3º</SelectItem>
-                        <SelectItem value="4">4º</SelectItem>
-                        <SelectItem value="5">5º</SelectItem>
-                        <SelectItem value="6">6º</SelectItem>
-                        <SelectItem value="7">7º</SelectItem>
-                        <SelectItem value="8">8º</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
+            <PeriodSelect
+              label="Período atual"
+              form={form as unknown as UseFormReturn}
             />
           </div>
           <div className="grid grid-cols-2 gap-3">
