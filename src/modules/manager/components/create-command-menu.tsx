@@ -22,17 +22,24 @@ import {
   TooltipTrigger,
 } from "@/components/@ui/tooltip";
 import { useSuperKey } from "@/hooks/use-super-key";
+import { useCreateEntityDrawer } from "@/contexts/create-entity-drawer/hooks";
 
 type CommandMenuProps = React.ComponentProps<typeof Button> &
   React.PropsWithChildren;
 
 export function CreateCommandMenu({ children, ...rest }: CommandMenuProps) {
+  const { setTaskDrawerOpen } = useCreateEntityDrawer();
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const superKey = useSuperKey();
 
   const handleClickButton = () => {
     setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleSelectItem = (callback: () => void) => {
+    setOpen(false);
+    callback();
   };
 
   useEffect(() => {
@@ -79,7 +86,10 @@ export function CreateCommandMenu({ children, ...rest }: CommandMenuProps) {
               />
               <span>Novo projeto</span>
             </CommandItem> */}
-            <CommandItem>
+            <CommandItem
+              className="cursor-pointer"
+              onSelect={() => handleSelectItem(() => setTaskDrawerOpen(true))}
+            >
               <Image
                 src="/img/icons/add-task.svg"
                 alt="user acetive icon"
@@ -89,7 +99,7 @@ export function CreateCommandMenu({ children, ...rest }: CommandMenuProps) {
               />
               <span>Nova tarefa</span>
             </CommandItem>
-            <CommandItem>
+            <CommandItem className="cursor-pointer">
               <UserPlus />
               <span>Novo usuário</span>
             </CommandItem>

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Task } from "@/models/task";
 import {
   closestCenter,
   DndContext,
@@ -46,21 +47,11 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Badge } from "@/components/@ui/badge";
 import { Button } from "@/components/@ui/button";
 import { Checkbox } from "@/components/@ui/checkbox";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/@ui/drawer";
+import { Drawer, DrawerTrigger } from "@/components/@ui/drawer";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -78,7 +69,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/@ui/select";
-import { Separator } from "@/components/@ui/separator";
 import {
   Table,
   TableBody,
@@ -87,28 +77,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/@ui/table";
-import { CalendarDays, Info, Search, Settings2 } from "lucide-react";
+import { CalendarDays, Search, Settings2 } from "lucide-react";
 import { Progress } from "@/components/@ui/progress";
-import { Textarea } from "@/components/@ui/textarea";
-import StatusSelect from "@/components/@ui/status-select";
-import { ResponsibleSelect } from "@/components/@ui/responsible-select";
-import { DatePicker } from "@/components/@ui/date-picker";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/@ui/tooltip";
 import { JustifyLatenessModal } from "@/components/@ui/justify-lateness-modal";
-
-type DataTableItem = {
-  id: number;
-  title: string;
-  description: string;
-  status: string;
-  responsible?: string;
-  level: number;
-  date: Date;
-};
+import { CreateTaskDrawerContent } from "@/components/@ui/create-task-drawer";
 
 function DragHandle({ id }: { id: number }) {
   const { attributes, listeners } = useSortable({
@@ -129,7 +101,7 @@ function DragHandle({ id }: { id: number }) {
   );
 }
 
-const columns: ColumnDef<DataTableItem>[] = [
+const columns: ColumnDef<Task>[] = [
   {
     id: "drag",
     header: () => null,
@@ -240,7 +212,7 @@ const columns: ColumnDef<DataTableItem>[] = [
   },
 ];
 
-function DraggableRow({ row }: { row: Row<DataTableItem> }) {
+function DraggableRow({ row }: { row: Row<Task> }) {
   const { transform, transition, setNodeRef, isDragging } = useSortable({
     id: row.original.id,
   });
@@ -270,7 +242,7 @@ export function TaskTable({
   data: initialData,
 }: {
   title?: string;
-  data: DataTableItem[];
+  data: Task[];
 }) {
   const [data, setData] = React.useState(() => initialData);
   const [rowSelection, setRowSelection] = React.useState({});
@@ -512,8 +484,7 @@ export function TaskTable({
   );
 }
 
-function TableCellViewer({ item }: { item: DataTableItem }) {
-  const [date] = React.useState<Date | undefined>(new Date(item.date));
+function TableCellViewer({ item }: { item: Task }) {
   const isMobile = useIsMobile();
 
   return (
@@ -523,77 +494,11 @@ function TableCellViewer({ item }: { item: DataTableItem }) {
           {item.title}
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader className="gap-1">
-          <DrawerTitle>Detalhes da tarefa</DrawerTitle>
-          <DrawerDescription>
-            Você pode visualizar informações da sua tarefa por aqui
-          </DrawerDescription>
-        </DrawerHeader>
-        <Separator />
-        <div className="flex flex-col gap-4 overflow-y-auto p-4 text-sm">
-          <form className="flex flex-col gap-6">
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="title">Título</Label>
-              <Input id="title" disabled defaultValue={item.title} />
-            </div>
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="description">Descrição</Label>
-              <Textarea
-                id="description"
-                disabled
-                defaultValue={item.description ?? ""}
-              />
-            </div>
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="status">Status</Label>
-              <StatusSelect defaultValue={item.status} />
-            </div>
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="responsible">Responsável</Label>
-              <ResponsibleSelect
-                disabled
-                defaultValue={item.responsible ?? ""}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="date">Data de entrega</Label>
-                <DatePicker
-                  date={date}
-                  calendarProps={{ mode: "range" }}
-                  buttonTriggerProps={{ disabled: true }}
-                />
-                <Tooltip disableHoverableContent>
-                  <TooltipTrigger asChild>
-                    <span className="text-xs text-muted-foreground flex items-center gap-1 -mt-2 ml-1">
-                      <Info size={12} />
-                      Penalidade
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom" className="max-w-sm">
-                    Se a atividade for entregue após esta data, haverá
-                    penalidade na quantidade de compensação recebida.
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label>Dificuldade</Label>
-                <div className="flex flex-col items-center gap-1 mx-4">
-                  <span>{item.level}/5</span>
-                  <Progress value={item.level * 20} />
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-        <DrawerFooter>
-          <Button>Salvar</Button>
-          <DrawerClose asChild>
-            <Button variant="outline">Fechar</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
+      <CreateTaskDrawerContent
+        item={item}
+        edit
+        onSubmitAction={(data) => console.log(data)}
+      />
     </Drawer>
   );
 }

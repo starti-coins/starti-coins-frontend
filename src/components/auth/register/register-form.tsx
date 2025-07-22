@@ -2,16 +2,11 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  registerDefaultValues,
-  RegisterFormData,
-  registerSchema,
-} from "./schema/register-schema";
 import AuthService from "@/services/auth/auth-service";
 import { Button } from "@/components/@ui/button";
-import { AdornedInput, Input } from "@/components/@ui/input";
+import { Input } from "@/components/@ui/input";
 import {
   Form,
   FormControl,
@@ -22,7 +17,8 @@ import {
 } from "@/components/@ui/form";
 import { notification } from "@/hooks/use-notification";
 import { useRouter } from "next/navigation";
-import PeriodSelect from "@/components/@ui/period-select";
+import FormSelect from "@/components/@ui/form-select";
+import { Account, accountSchema } from "@/models/account";
 
 export function RegisterForm({
   className,
@@ -30,12 +26,19 @@ export function RegisterForm({
 }: React.ComponentProps<"form">) {
   const router = useRouter();
 
-  const form = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: registerDefaultValues,
+  const form = useForm<Account>({
+    resolver: zodResolver(accountSchema),
+    defaultValues: {
+      cpf: "",
+      email: "",
+      name: "",
+      period: "",
+      registration: "",
+      rg: "",
+    },
   });
 
-  const handleRegister = async (formData: RegisterFormData) => {
+  const handleRegister = async (formData: Account) => {
     try {
       const authService = new AuthService();
 
@@ -130,10 +133,26 @@ export function RegisterForm({
               )}
             />
 
-            <PeriodSelect
+            <FormSelect<Account>
+              name="period"
+              label="Período atual"
+              groupLabel="Períodos"
+              form={form}
+              items={[
+                { value: "1", label: "1º Período" },
+                { value: "2", label: "2º Período" },
+                { value: "3", label: "3º Período" },
+                { value: "4", label: "4º Período" },
+                { value: "5", label: "5º Período" },
+                { value: "6", label: "6º Período" },
+                { value: "7", label: "7º Período" },
+                { value: "8", label: "8º Período" },
+              ]}
+            />
+            {/* <PeriodSelect
               label="Período atual"
               form={form as unknown as UseFormReturn}
-            />
+            /> */}
           </div>
           <div className="grid grid-cols-2 gap-3">
             <FormField
@@ -176,7 +195,7 @@ export function RegisterForm({
               )}
             />
           </div>
-          <FormField
+          {/* <FormField
             control={form.control}
             name="password"
             render={({ field }) => (
@@ -215,7 +234,7 @@ export function RegisterForm({
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
           <Button
             disabled={form.formState.isSubmitting}
             loading={form.formState.isSubmitting}

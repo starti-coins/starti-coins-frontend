@@ -2,12 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  RegisterFormData,
-  registerSchema,
-} from "@/components/auth/register/schema/register-schema";
 import { Badge } from "@/components/@ui/badge";
 import { Button } from "@/components/@ui/button";
 import {
@@ -19,7 +15,7 @@ import {
 } from "@/components/@ui/card";
 import { Input } from "@/components/@ui/input";
 import { Separator } from "@/components/@ui/separator";
-import { Account } from "@/models/account";
+import { Account, accountSchema } from "@/models/account";
 import {
   User,
   Edit,
@@ -31,7 +27,7 @@ import {
   KeyRound,
   CircleX,
 } from "lucide-react";
-import PeriodSelect from "@/components/@ui/period-select";
+import FormSelect from "@/components/@ui/form-select";
 import {
   Form,
   FormControl,
@@ -44,10 +40,8 @@ import { cn } from "@/lib/utils";
 
 function ProfileForm({ userData }: { userData: Account }) {
   const [edit, setEdit] = useState(false);
-
-  const optionalSchema = registerSchema._def.schema.partial();
-  const form = useForm<Partial<RegisterFormData>>({
-    resolver: zodResolver(optionalSchema),
+  const form = useForm<Account>({
+    resolver: zodResolver(accountSchema),
     defaultValues: {
       name: userData.name,
       email: userData.email,
@@ -232,10 +226,19 @@ function ProfileForm({ userData }: { userData: Account }) {
                         Período
                       </p>
                       {edit ? (
-                        <PeriodSelect
+                        <FormSelect<Account>
+                          name="period"
                           label=""
+                          groupLabel="Períodos"
                           className="-mt-2"
-                          form={form as unknown as UseFormReturn}
+                          form={form}
+                          items={[
+                            { value: "1", label: "1º" },
+                            { value: "2", label: "2º" },
+                            { value: "3", label: "3º" },
+                            { value: "4", label: "4º" },
+                            { value: "5", label: "5º" },
+                          ]}
                         />
                       ) : (
                         <Badge variant="secondary" className="mt-1">

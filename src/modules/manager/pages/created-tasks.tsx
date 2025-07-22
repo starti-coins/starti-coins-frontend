@@ -3,6 +3,16 @@ import { Spinner } from "@/components/@ui/spinner";
 import { Suspense } from "react";
 import { TaskTable } from "../../shared/task-table/data-table";
 
+const data = {
+  id: 1,
+  title: "Tarefa 1",
+  description: "Descrição da tarefa 1",
+  status: "Done",
+  responsible: "Eddie Lake",
+  level: 3,
+  date: new Date(),
+};
+
 function CreatedTasks() {
   return (
     <Page>
@@ -13,7 +23,7 @@ function CreatedTasks() {
       </p>
       <div className="my-2">
         <Suspense fallback={<Spinner />}>
-          <TaskTable data={[]} />
+          <TaskTable data={[data]} />
         </Suspense>
       </div>
     </Page>
