@@ -20,6 +20,20 @@ export const registerOptions = () =>
       service.register(payload),
   });
 
+export interface APIUpdateAccountPayload {
+  id: number;
+  payload: Partial<Omit<Account, "periodo">> & { periodo?: number };
+}
+
+export const updateAccountOptions = () =>
+  mutationOptions({
+    mutationKey: [...getAuthBaseQueryKey(), "updateAccount"],
+    mutationFn: ({
+      payload,
+    }: MutationVariables<void, APIUpdateAccountPayload>) =>
+      service.updateAccount(payload.id, payload.payload),
+  });
+
 export interface APILoginPayload {
   email: string;
   password: string;

@@ -38,6 +38,18 @@ class AuthService implements Auth {
     return true;
   }
 
+  async updateAccount(
+    id: number,
+    account: Partial<Omit<Account, "periodo">> & { periodo?: number }
+  ): Promise<boolean> {
+    const response = await APIClient.put(`/usuarios/${id}`, account);
+
+    const token = await generateToken(response.data.user, "3d");
+    StorageHelper.setCookie("token", token, 3);
+
+    return true;
+  }
+
   async forgotPassword(_email: string): Promise<boolean> {
     await APIClient.post(`/usuarios/reset-senha?email=${_email}`);
 

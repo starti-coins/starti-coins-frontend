@@ -37,8 +37,11 @@ import {
   FormMessage,
 } from "@/components/@ui/form";
 import { cn } from "@/lib/utils";
+import { useUpdateAccount } from "@/hooks/account/use-update-account";
 
 function ProfileForm({ userData }: { userData: Account }) {
+  const { updateAccount: handleUpdate, updateAccountPending } =
+    useUpdateAccount();
   const [edit, setEdit] = useState(false);
   const partialSchema = accountSchema.partial();
   const form = useForm<Partial<Account>>({
@@ -88,8 +91,7 @@ function ProfileForm({ userData }: { userData: Account }) {
 
   const updateAccount = () => {
     setEdit(false);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { id_usuario: _, ...rest } = { ...userData };
+    const { id_usuario, ...rest } = { ...userData };
     rest.periodo = String(rest.periodo);
 
     // Compare objects by their properties
@@ -106,7 +108,10 @@ function ProfileForm({ userData }: { userData: Account }) {
       return;
     }
 
-    Object.keys(formValues).forEach((d) => form.resetField(d as keyof Account));
+    handleUpdate({
+      id: id_usuario,
+      payload: { ...formValues, periodo: +formValues.periodo! },
+    });
   };
 
   return (
@@ -164,7 +169,13 @@ function ProfileForm({ userData }: { userData: Account }) {
                 <div className="flex items-center space-x-1 justify-between md:justify-end w-full md:w-auto">
                   {!edit ? (
                     <>
-                      <Button size="sm" type="button" onClick={handleEditClick}>
+                      <Button
+                        size="sm"
+                        type="button"
+                        onClick={handleEditClick}
+                        loading={updateAccountPending}
+                        disabled={updateAccountPending}
+                      >
                         <div className="flex items-center">
                           <Edit className="mr-2 h-4 w-4" />
                           Editar
@@ -182,7 +193,12 @@ function ProfileForm({ userData }: { userData: Account }) {
                     </>
                   ) : (
                     <>
-                      <Button size="sm" type="submit">
+                      <Button
+                        size="sm"
+                        type="submit"
+                        loading={updateAccountPending}
+                        disabled={updateAccountPending}
+                      >
                         <div className="flex items-center">
                           <Edit className="mr-2 h-4 w-4" />
                           Salvar
@@ -192,6 +208,8 @@ function ProfileForm({ userData }: { userData: Account }) {
                         size="sm"
                         variant="destructive"
                         onClick={handleCancel}
+                        loading={updateAccountPending}
+                        disabled={updateAccountPending}
                       >
                         <div className="flex items-center gap-2">
                           <CircleX className="-ml-1" />

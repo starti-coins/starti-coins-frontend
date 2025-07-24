@@ -4,13 +4,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import React, { PropsWithChildren } from "react";
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: false,
       retryOnMount: false,
       refetchOnWindowFocus: false,
-      staleTime: 1000 * 60 * 15,
+      staleTime: 100,
     },
   },
 });
