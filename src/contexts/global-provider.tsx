@@ -1,6 +1,7 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import React, { PropsWithChildren } from "react";
 
 const queryClient = new QueryClient({
@@ -16,7 +17,9 @@ const queryClient = new QueryClient({
 
 function GlobalProvider({ children }: PropsWithChildren) {
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <NuqsAdapter>{children}</NuqsAdapter>
+    </QueryClientProvider>
   );
 }
 

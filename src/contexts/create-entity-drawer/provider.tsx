@@ -1,14 +1,28 @@
 "use client";
 
+import { parseAsBoolean, useQueryState } from "nuqs";
 import { CreateEntityDrawerContext } from ".";
-import { PropsWithChildren, useMemo, useState } from "react";
+import { PropsWithChildren, useMemo } from "react";
 
 const CreateEntityDrawerProvider = ({ children }: PropsWithChildren) => {
-  const [taskDrawerOpen, setTaskDrawerOpen] = useState(false);
+  // const [taskDrawerOpen, setTaskDrawerOpen] = useState(false);
+  const [taskDrawerOpen, setTaskDrawerOpen] = useQueryState(
+    "taskDrawerOpen",
+    parseAsBoolean.withDefault(false)
+  );
+  const [userDrawerOpen, setUserDrawerOpen] = useQueryState(
+    "userDrawerOpen",
+    parseAsBoolean.withDefault(false)
+  );
 
   const values = useMemo(
-    () => ({ taskDrawerOpen, setTaskDrawerOpen }),
-    [taskDrawerOpen]
+    () => ({
+      taskDrawerOpen,
+      setTaskDrawerOpen,
+      userDrawerOpen,
+      setUserDrawerOpen,
+    }),
+    [taskDrawerOpen, setTaskDrawerOpen, userDrawerOpen, setUserDrawerOpen]
   );
 
   return (

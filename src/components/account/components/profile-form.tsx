@@ -40,13 +40,14 @@ import { cn } from "@/lib/utils";
 
 function ProfileForm({ userData }: { userData: Account }) {
   const [edit, setEdit] = useState(false);
-  const form = useForm<Account>({
-    resolver: zodResolver(accountSchema),
+  const partialSchema = accountSchema.partial();
+  const form = useForm<Partial<Account>>({
+    resolver: zodResolver(partialSchema),
     defaultValues: {
       nome: userData.nome,
       email: userData.email,
       matricula: userData.matricula,
-      periodo: userData.periodo,
+      periodo: String(userData.periodo),
       cpf: userData.cpf,
       rg: userData.rg,
       cargo: userData.cargo,
@@ -76,7 +77,7 @@ function ProfileForm({ userData }: { userData: Account }) {
       nome: userData.nome,
       email: userData.email,
       matricula: userData.matricula,
-      periodo: userData.periodo,
+      periodo: String(userData.periodo),
       cpf: userData.cpf,
       rg: userData.rg,
       cargo: userData.cargo,
@@ -87,12 +88,25 @@ function ProfileForm({ userData }: { userData: Account }) {
 
   const updateAccount = () => {
     setEdit(false);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id_usuario: _, ...rest } = { ...userData };
+    rest.periodo = String(rest.periodo);
 
-    if (JSON.stringify(form.getValues()) === JSON.stringify(userData)) {
+    // Compare objects by their properties
+    const formValues = form.getValues();
+    const hasChanges = Object.keys(formValues).some((key) => {
+      return (
+        formValues[key as keyof typeof formValues] !==
+        rest[key as keyof typeof rest]
+      );
+    });
+
+    if (!hasChanges) {
       // No changes, do nothing
       return;
     }
-    console.log("Form data to save:", form.getValues());
+
+    Object.keys(formValues).forEach((d) => form.resetField(d as keyof Account));
   };
 
   return (
@@ -230,18 +244,21 @@ function ProfileForm({ userData }: { userData: Account }) {
                         Período
                       </p>
                       {edit ? (
-                        <FormSelect<Account>
+                        <FormSelect<Partial<Account>>
                           name="periodo"
                           label=""
                           groupLabel="Períodos"
                           className="-mt-2"
                           form={form}
                           items={[
-                            { value: "1", label: "1º" },
-                            { value: "2", label: "2º" },
-                            { value: "3", label: "3º" },
-                            { value: "4", label: "4º" },
-                            { value: "5", label: "5º" },
+                            { value: "1", label: "1º Período" },
+                            { value: "2", label: "2º Período" },
+                            { value: "3", label: "3º Período" },
+                            { value: "4", label: "4º Período" },
+                            { value: "5", label: "5º Período" },
+                            { value: "6", label: "6º Período" },
+                            { value: "7", label: "7º Período" },
+                            { value: "8", label: "8º Período" },
                           ]}
                         />
                       ) : (

@@ -23,7 +23,7 @@ export const useResetPassword = (options?: MutationCallbackOptions) => {
           onSuccess: () => {
             options?.onCompleted?.();
             notification.success(
-              "Senha redefinida com sucesso! Você será redicerionado.",
+              "Senha redefinida com sucesso! Você será redirecionado.",
               {
                 onAutoClose: () => {
                   router.push("/login");

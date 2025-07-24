@@ -12,8 +12,10 @@ class AppError extends Error {
 
   static messages = {
     UNAUTHORIZED: "Faça login para continuar!",
+    BAD_REQUEST: "Verifique os dados da requisição e tente novamente.",
     NOT_FOUND: "O item requisitado não foi encontrado.",
     UNEXPECTED: "Um erro inesperado ocorreu. Por favor, contate o suporte.",
+    CONFLICT: "Conflito na criação do item.",
     UNAVAILABLE_SERVICE:
       "Não foi possível conectar aos nossos servidores. Por favor, tente novamente mais tarde.",
     TOKEN_ALREDY_GENERATED: "Um e-mail de redefinição de senha já foi enviado.",

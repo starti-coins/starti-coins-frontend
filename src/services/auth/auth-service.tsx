@@ -22,8 +22,8 @@ class AuthService implements Auth {
       senha: password,
     });
 
-    const token = await generateToken(response.data.user, "5m");
-    StorageHelper.setCookie("token", token, 1);
+    const token = await generateToken(response.data.user, "3d");
+    StorageHelper.setCookie("token", token, 3);
 
     return true;
   }
@@ -32,8 +32,8 @@ class AuthService implements Auth {
     StorageHelper.removeCookie("token");
   }
 
-  async register(account: Account): Promise<boolean> {
-    await APIClient.post("/auth/register", account);
+  async register(account: Partial<Account>): Promise<boolean> {
+    await APIClient.post("/usuarios", account);
 
     return true;
   }

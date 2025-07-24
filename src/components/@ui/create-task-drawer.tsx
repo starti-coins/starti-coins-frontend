@@ -22,7 +22,7 @@ import { Textarea } from "./textarea";
 import { FormDatePicker } from "./date-picker";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
 import { Info } from "lucide-react";
-import { useCreateEntityDrawer } from "@/contexts/create-entity-drawer/hooks";
+import { useCreateTaskDrawer } from "@/contexts/create-entity-drawer/hooks";
 import {
   Form,
   FormControl,
@@ -35,7 +35,7 @@ import FormSelect from "./form-select";
 import SliderTooltip from "./checkpoint-slider";
 
 export function CreateTaskDrawer({ children }: PropsWithChildren) {
-  const { taskDrawerOpen, setTaskDrawerOpen } = useCreateEntityDrawer();
+  const { taskDrawerOpen, setTaskDrawerOpen } = useCreateTaskDrawer();
   const isMobile = useIsMobile();
 
   return (
@@ -252,27 +252,6 @@ export const CreateTaskDrawerContent = ({
           </form>
         </Form>
       </div>
-      {Object.keys(form.formState.errors).length > 0 && (
-        <div className="p-4 pt-0">
-          <Separator className="mb-3" />
-          <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
-            <h4 className="text-sm font-medium text-destructive mb-2">
-              Erros no formulário:
-            </h4>
-            <ul className="text-xs text-destructive space-y-1">
-              {Object.entries(form.formState.errors).map(([field, error]) => (
-                <li key={field} className="flex items-start gap-1">
-                  <span className="text-destructive">•</span>
-                  <span>
-                    <strong className="capitalize">{field}:</strong>{" "}
-                    {error?.message}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
     </DrawerContent>
   );
 };

@@ -45,7 +45,7 @@ export function NavUser({
 
   const handleLogout = async () => {
     await logout().then(() => {
-      router.refresh();
+      router.push("login");
     });
   };
 

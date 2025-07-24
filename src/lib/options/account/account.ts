@@ -13,6 +13,13 @@ export const getAccountOptions = () =>
     queryFn: () => service.getCachedAccount(),
   });
 
+export const registerOptions = () =>
+  mutationOptions({
+    mutationKey: [...getAuthBaseQueryKey(), "register"],
+    mutationFn: ({ payload }: MutationVariables<void, Partial<Account>>) =>
+      service.register(payload),
+  });
+
 export interface APILoginPayload {
   email: string;
   password: string;

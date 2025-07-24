@@ -30,13 +30,20 @@ APIClient.interceptors.response.use(
 
     switch (error.response.status) {
       case 400:
-        formattedError = AppError.BadRequest(AppError.messages.UNAUTHORIZED);
+        formattedError = AppError.BadRequest(
+          `${AppError.messages.BAD_REQUEST} ${serverError.message}`
+        );
         break;
       case 401:
         formattedError = AppError.Unauthorized(AppError.messages.UNAUTHORIZED);
         break;
       case 404:
         formattedError = AppError.NotFound(serverError.message);
+        break;
+      case 409:
+        formattedError = AppError.Conflict(
+          `${AppError.messages.CONFLICT} ${serverError.message}`
+        );
         break;
       case 422:
         formattedError = AppError.UnprocessableEntity(serverError.message);
@@ -56,7 +63,7 @@ APIClient.interceptors.response.use(
         );
         break;
       default:
-        formattedError = AppError.Unknown;
+        formattedError = AppError.Unknown(serverError.message);
         break;
     }
 
