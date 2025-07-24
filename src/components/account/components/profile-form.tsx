@@ -76,16 +76,7 @@ function ProfileForm({ userData }: { userData: Account }) {
 
   const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    form.reset({
-      nome: userData.nome,
-      email: userData.email,
-      matricula: userData.matricula,
-      periodo: String(userData.periodo),
-      cpf: userData.cpf,
-      rg: userData.rg,
-      cargo: userData.cargo,
-      status: userData.status,
-    });
+    form.reset();
     setEdit(false);
   };
 
