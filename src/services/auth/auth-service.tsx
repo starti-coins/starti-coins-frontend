@@ -2,26 +2,34 @@ import { Account } from "@/models/account";
 import Auth from "@/interfaces/auth";
 import APIClient from "../api/client";
 import StorageHelper from "@/helpers/storage/storage-helper";
+import { generateToken, verifyToken } from "@/lib/token/token";
 
 class AuthService implements Auth {
-  async login(email: string, password: string): Promise<boolean> {
-    try {
-      const response = await APIClient.post("/auth/login", {
-        email,
-        password,
-      });
+  async getCachedAccount(): Promise<Account | undefined> {
+    const token = StorageHelper.getCookie("token");
 
-      StorageHelper.setJSON("account", response.data, true);
-    } catch (error) {
-      document.cookie = `token=${"asd"}; path=/; max-age=86400; secure; samesite=strict`;
-      console.log(error);
+    if (!token) {
+      return undefined;
     }
+
+    const { payload: account } = await verifyToken(token);
+    return account.data as Account;
+  }
+
+  async login(email: string, password: string): Promise<boolean> {
+    const response = await APIClient.post("/usuarios/login", {
+      email,
+      senha: password,
+    });
+
+    const token = await generateToken(response.data.user, "5m");
+    StorageHelper.setCookie("token", token, 1);
 
     return true;
   }
 
   async logout(): Promise<void> {
-    await APIClient.post("/auth/logout");
+    StorageHelper.removeCookie("token");
   }
 
   async register(account: Account): Promise<boolean> {
@@ -31,9 +39,7 @@ class AuthService implements Auth {
   }
 
   async forgotPassword(_email: string): Promise<boolean> {
-    await APIClient.post("/auth/reset-password", {
-      email: _email,
-    });
+    await APIClient.post(`/usuarios/reset-senha?email=${_email}`);
 
     return true;
   }
@@ -45,8 +51,8 @@ class AuthService implements Auth {
   }
 
   async resetPassword(_token: string, __newPassword: string): Promise<boolean> {
-    await APIClient.put(`/auth/reset-password/${_token}`, {
-      new_password: __newPassword,
+    await APIClient.put(`/usuarios/reset-senha/${_token}`, {
+      novaSenha: __newPassword,
     });
 
     return true;

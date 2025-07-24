@@ -31,10 +31,12 @@ export function RegisterForm({
     defaultValues: {
       cpf: "",
       email: "",
-      name: "",
-      period: "",
-      registration: "",
+      nome: "",
+      periodo: "",
+      matricula: "",
       rg: "",
+      cargo: "",
+      status: true,
     },
   });
 
@@ -75,13 +77,13 @@ export function RegisterForm({
         <div className="grid gap-6">
           <FormField
             control={form.control}
-            name="name"
+            name="nome"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="name">Nome completo</FormLabel>
+                <FormLabel htmlFor="nome">Nome completo</FormLabel>
                 <FormControl>
                   <Input
-                    id="name"
+                    id="nome"
                     type="text"
                     placeholder="José da Silva"
                     required
@@ -115,13 +117,13 @@ export function RegisterForm({
           <div className="grid grid-cols-2 gap-3">
             <FormField
               control={form.control}
-              name="registration"
+              name="matricula"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="registration">Matrícula</FormLabel>
+                  <FormLabel htmlFor="matricula">Matrícula</FormLabel>
                   <FormControl>
                     <Input
-                      id="registration"
+                      id="matricula"
                       type="text"
                       placeholder="2020001122"
                       required
@@ -134,7 +136,7 @@ export function RegisterForm({
             />
 
             <FormSelect<Account>
-              name="period"
+              name="periodo"
               label="Período atual"
               groupLabel="Períodos"
               form={form}
@@ -149,10 +151,6 @@ export function RegisterForm({
                 { value: "8", label: "8º Período" },
               ]}
             />
-            {/* <PeriodSelect
-              label="Período atual"
-              form={form as unknown as UseFormReturn}
-            /> */}
           </div>
           <div className="grid grid-cols-2 gap-3">
             <FormField

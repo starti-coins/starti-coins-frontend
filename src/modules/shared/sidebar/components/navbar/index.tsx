@@ -26,11 +26,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/@ui/sidebar";
-import StorageHelper from "@/helpers/storage/storage-helper";
-import AuthService from "@/services/auth/auth-service";
-import { notification } from "@/hooks/use-notification";
 import Link from "next/link";
 import { NotificationCard } from "@/components/@ui/notification-card";
+import { useLogout } from "@/hooks/account/use-logout";
 
 export function NavUser({
   user,
@@ -42,20 +40,13 @@ export function NavUser({
   };
 }) {
   const router = useRouter();
+  const { logout } = useLogout();
   const { isMobile } = useSidebar();
 
   const handleLogout = async () => {
-    try {
-      const authService = new AuthService();
-
-      await authService.logout().catch(() => true);
-
-      StorageHelper.removeCookie("token");
-
+    await logout().then(() => {
       router.refresh();
-    } catch (error) {
-      notification.formattedError(error);
-    }
+    });
   };
 
   return (

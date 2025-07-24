@@ -3,14 +3,12 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ResetPasswordFormData,
   resetPasswordSchema,
   resetPasswordDefaultValues,
 } from "./schema/reset-password-schema";
-import AuthService from "@/services/auth/auth-service";
 import { Button } from "@/components/@ui/button";
 import { AdornedInput, Input } from "@/components/@ui/input";
 import {
@@ -21,36 +19,24 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/@ui/form";
-import { notification } from "@/hooks/use-notification";
+import { useResetPassword } from "@/hooks/account/use-reset-password";
 
 export function ResetPasswordForm({
   className,
   token,
   ...props
 }: React.ComponentProps<"form"> & { token: string }) {
-  const router = useRouter();
+  const { resetPassword } = useResetPassword();
   const form = useForm<ResetPasswordFormData>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: resetPasswordDefaultValues,
   });
 
   const handleResetPassword = async (formData: ResetPasswordFormData) => {
-    try {
-      const authService = new AuthService();
-
-      await authService.resetPassword(token, formData.password);
-
-      notification.success(
-        "Senha redefinida com sucesso. Você será redirecionado",
-        {
-          onAutoClose: () => router.push("/login"),
-        }
-      );
-    } catch (error) {
-      notification.formattedError(error);
-    } finally {
-      form.reset();
-    }
+    await resetPassword({
+      token,
+      newPassword: formData.password,
+    });
   };
 
   return (

@@ -1,4 +1,5 @@
 import { MiddlewareConfig, NextRequest, NextResponse } from "next/server";
+import { verifyToken } from "./lib/token/token";
 
 type PublicRoute =
   | {
@@ -28,7 +29,7 @@ const publicRoutes: PublicRoute[] = [
 const SPLITED_PATH_LENGTH_WITHOUT_SUBDOMAIN = 2;
 const redirectWheNotAuthenticated = "/login";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const publicRoute = publicRoutes.find((route) =>
     route.allowSubdomain &&
@@ -37,7 +38,12 @@ export function middleware(request: NextRequest) {
       ? path.startsWith(route.path)
       : route.path === path
   );
-  const isAuthenticated = request.cookies.get("token");
+  const token = request.cookies.get("token");
+  const { payload: isAuthenticated } = await verifyToken(
+    token?.value || ""
+  ).catch(() => {
+    return { payload: null };
+  });
 
   if (publicRoute && isAuthenticated && publicRoute.action === "redirect") {
     // If the user is authenticated and trying to access a public route, redirect them to the dashboard

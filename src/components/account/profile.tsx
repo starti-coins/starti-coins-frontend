@@ -1,20 +1,24 @@
 "use client";
 
-import { useAccount } from "@/contexts/account/hooks";
 import Page from "@/components/@ui/page";
 import { Spinner } from "@/components/@ui/spinner";
 import ProfileForm from "./components/profile-form";
+import { useAccount } from "@/hooks/account/use-account";
 
 export default function Profile() {
-  const userData = useAccount();
+  const { account, accountPending } = useAccount();
 
-  if (!userData) {
+  if (accountPending) {
     return <Spinner />;
+  }
+
+  if (!account) {
+    return <div>Account not found</div>;
   }
 
   return (
     <Page>
-      <ProfileForm userData={userData} />
+      <ProfileForm userData={account} />
     </Page>
   );
 }

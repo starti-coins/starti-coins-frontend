@@ -9,7 +9,6 @@ import {
   forgotPasswordSchema,
   forgotPasswordDefaultValues,
 } from "./schema/forgot-password-schema";
-import AuthService from "@/services/auth/auth-service";
 import { Button } from "@/components/@ui/button";
 import { Input } from "@/components/@ui/input";
 import {
@@ -20,31 +19,22 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/@ui/form";
-import { notification } from "@/hooks/use-notification";
+import { useForgotPassword } from "@/hooks/account/use-forgot-password";
 
 export function ForgotPasswordForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  const { forgotPassword } = useForgotPassword();
   const form = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: forgotPasswordDefaultValues,
   });
 
   const handleForgotPassword = async (formData: ForgotPasswordFormData) => {
-    try {
-      const authService = new AuthService();
-
-      await authService.forgotPassword(formData.email);
-
-      notification.success(
-        "Se o email informado estiver cadastrado, você receberá um link para redefinir sua senha."
-      );
-    } catch (error) {
-      notification.formattedError(error);
-    } finally {
-      form.reset();
-    }
+    await forgotPassword({
+      email: formData.email,
+    });
   };
 
   return (

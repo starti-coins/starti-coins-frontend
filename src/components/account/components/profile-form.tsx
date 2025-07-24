@@ -43,13 +43,13 @@ function ProfileForm({ userData }: { userData: Account }) {
   const form = useForm<Account>({
     resolver: zodResolver(accountSchema),
     defaultValues: {
-      name: userData.name,
+      nome: userData.nome,
       email: userData.email,
-      registration: userData.registration,
-      period: userData.period,
+      matricula: userData.matricula,
+      periodo: userData.periodo,
       cpf: userData.cpf,
       rg: userData.rg,
-      position: userData.position,
+      cargo: userData.cargo,
       status: userData.status,
     },
   });
@@ -73,13 +73,13 @@ function ProfileForm({ userData }: { userData: Account }) {
   const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     form.reset({
-      name: userData.name,
+      nome: userData.nome,
       email: userData.email,
-      registration: userData.registration,
-      period: userData.period,
+      matricula: userData.matricula,
+      periodo: userData.periodo,
       cpf: userData.cpf,
       rg: userData.rg,
-      position: userData.position,
+      cargo: userData.cargo,
       status: userData.status,
     });
     setEdit(false);
@@ -118,11 +118,11 @@ function ProfileForm({ userData }: { userData: Account }) {
                   <div>
                     <CardTitle
                       className="text-xl"
-                      title={form.getValues().name}
+                      title={form.getValues().nome}
                     >
                       <FormField
                         control={form.control}
-                        name="name"
+                        name="nome"
                         render={({ field }) => (
                           <FormItem className="!w-full !min-w-full">
                             <FormControl>
@@ -200,11 +200,11 @@ function ProfileForm({ userData }: { userData: Account }) {
                     <Hash className="h-4 w-4 text-gray-400" />
                     <FormField
                       control={form.control}
-                      name="registration"
+                      name="matricula"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel
-                            htmlFor="registration"
+                            htmlFor="matricula"
                             className={labelClassnames}
                           >
                             Matrícula
@@ -212,7 +212,7 @@ function ProfileForm({ userData }: { userData: Account }) {
                           <FormControl>
                             <Input
                               className={editClassnames}
-                              id="registration"
+                              id="matricula"
                               type="text"
                               required
                               {...field}
@@ -231,7 +231,7 @@ function ProfileForm({ userData }: { userData: Account }) {
                       </p>
                       {edit ? (
                         <FormSelect<Account>
-                          name="period"
+                          name="periodo"
                           label=""
                           groupLabel="Períodos"
                           className="-mt-2"
@@ -246,7 +246,7 @@ function ProfileForm({ userData }: { userData: Account }) {
                         />
                       ) : (
                         <Badge variant="secondary" className="mt-1">
-                          {userData.period}º Período
+                          {userData.periodo}º Período
                         </Badge>
                       )}
                     </div>

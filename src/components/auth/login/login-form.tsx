@@ -10,7 +10,6 @@ import {
   LoginFormData,
   loginSchema,
 } from "./schema/login-schema";
-import AuthService from "@/services/auth/auth-service";
 import { Button } from "@/components/@ui/button";
 import { AdornedInput, Input } from "@/components/@ui/input";
 import {
@@ -21,13 +20,18 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/@ui/form";
-import { notification } from "@/hooks/use-notification";
+import { useLogin } from "@/hooks/account/use-login";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
   const router = useRouter();
+  const { login, loginPending } = useLogin({
+    onCompleted: () => {
+      router.refresh();
+    },
+  });
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -35,17 +39,10 @@ export function LoginForm({
   });
 
   const handleLogin = async (formData: LoginFormData) => {
-    try {
-      const authService = new AuthService();
-
-      await authService.login(formData.email, formData.password);
-
-      router.refresh();
-    } catch (error) {
-      notification.formattedError(error);
-    } finally {
-      form.reset();
-    }
+    await login({
+      email: formData.email,
+      password: formData.password,
+    });
   };
 
   return (
@@ -113,8 +110,8 @@ export function LoginForm({
             )}
           />
           <Button
-            disabled={form.formState.isSubmitting}
-            loading={form.formState.isSubmitting}
+            disabled={form.formState.isSubmitting || loginPending}
+            loading={form.formState.isSubmitting || loginPending}
             type="submit"
             className="w-full bg-gray-800 hover:bg-gray-800/90 mt-4"
           >

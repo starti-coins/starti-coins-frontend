@@ -1,6 +1,7 @@
 import { Account } from "@/models/account";
 
 interface Auth {
+  getCachedAccount(): Promise<Account | undefined>;
   login(email: string, password: string): Promise<boolean>;
   register(account: Account): Promise<boolean>;
   forgotPassword(email: string): Promise<boolean>;

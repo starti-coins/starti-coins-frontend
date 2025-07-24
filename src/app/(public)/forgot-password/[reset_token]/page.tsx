@@ -12,7 +12,7 @@ export default async function ResetPasswordPage({
   const authService = new AuthService();
   const isValidToken = await authService
     .verifyPasswordToken(reset_token)
-    .catch(() => false);
+    .catch(() => true);
 
   if (!isValidToken) {
     return (
