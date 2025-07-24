@@ -69,9 +69,13 @@ export const CreateTaskDrawerContent = ({
       title: item?.title ?? "",
       description: item?.description ?? "",
       status: item?.status ?? "",
-      responsible: item?.responsible ?? "",
+      responsible_id: item?.responsible_id ?? "",
       level: item?.level || 0,
-      date: item?.date,
+      due_date: item?.due_date,
+      assignment_date: item?.assignment_date,
+      completion_date: item?.completion_date,
+      hours: item?.hours || 0,
+      coins: item?.coins || 0,
     },
   });
 
@@ -158,7 +162,7 @@ export const CreateTaskDrawerContent = ({
               </div>
               <div className="flex flex-col gap-3">
                 <FormSelect<Partial<Task>>
-                  name="responsible"
+                  name="responsible_id"
                   label="Responsável"
                   groupLabel="Responsáveis"
                   form={form}
@@ -176,7 +180,7 @@ export const CreateTaskDrawerContent = ({
               <div className="grid grid-cols-2 gap-2">
                 <div className="flex flex-col gap-3">
                   <FormDatePicker<Partial<Task>>
-                    name="date"
+                    name="due_date"
                     label="Data de entrega"
                     form={form}
                     buttonTriggerProps={{

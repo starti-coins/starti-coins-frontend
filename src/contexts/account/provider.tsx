@@ -12,6 +12,8 @@ const AccountProvider = ({ children }: PropsWithChildren) => {
     period: "3",
     cpf: "10970006489",
     rg: "12.345.678-9",
+    position: "Colaborador",
+    status: true,
   } satisfies Account);
 
   const values = useMemo(() => ({ account }), [account]);

@@ -14,6 +14,8 @@ export const accountSchema = z.object({
     .refine((cpf: string) => !cpf.match(/[^\d]+/g), "Apenas números")
     .refine((cpf: string) => isValidCPF(cpf), "CPF inválido"),
   rg: z.string().min(8, "RG inválido").max(12, "RG inválido"),
+  position: z.string().min(1, "Cargo é obrigatório"),
+  status: z.boolean(),
 });
 
 export type Account = z.infer<typeof accountSchema>;

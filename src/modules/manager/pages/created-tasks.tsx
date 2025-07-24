@@ -2,16 +2,21 @@ import Page from "@/components/@ui/page";
 import { Spinner } from "@/components/@ui/spinner";
 import { Suspense } from "react";
 import { TaskTable } from "../../shared/task-table/data-table";
+import { Task } from "@/models/task";
 
 const data = {
   id: 1,
   title: "Tarefa 1",
   description: "Descrição da tarefa 1",
   status: "Done",
-  responsible: "Eddie Lake",
+  responsible_id: "Eddie Lake",
   level: 3,
-  date: new Date(),
-};
+  due_date: new Date(),
+  assignment_date: new Date(),
+  completion_date: new Date(),
+  hours: 2,
+  coins: 100,
+} satisfies Task;
 
 function CreatedTasks() {
   return (

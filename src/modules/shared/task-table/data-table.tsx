@@ -163,7 +163,7 @@ const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => (
       <span className="flex items-center gap-2">
         <CalendarDays className="size-4" />
-        {new Date(row.original.date).toLocaleDateString("pt-BR", {
+        {new Date(row.original.due_date).toLocaleDateString("pt-BR", {
           day: "2-digit",
           month: "short",
           year: "numeric",

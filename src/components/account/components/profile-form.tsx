@@ -49,6 +49,8 @@ function ProfileForm({ userData }: { userData: Account }) {
       period: userData.period,
       cpf: userData.cpf,
       rg: userData.rg,
+      position: userData.position,
+      status: userData.status,
     },
   });
 
@@ -77,6 +79,8 @@ function ProfileForm({ userData }: { userData: Account }) {
       period: userData.period,
       cpf: userData.cpf,
       rg: userData.rg,
+      position: userData.position,
+      status: userData.status,
     });
     setEdit(false);
   };
