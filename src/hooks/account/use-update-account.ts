@@ -24,9 +24,7 @@ export const useUpdateAccount = (options?: MutationCallbackOptions) => {
             queryClient.invalidateQueries({
               queryKey: getAccountOptions().queryKey,
             });
-            notification.success("Conta atualizada!", {
-              duration: 1000,
-            });
+            notification.success("Conta atualizada!");
             options?.onCompleted?.();
           },
           onError: (error) => {

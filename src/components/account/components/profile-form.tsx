@@ -36,8 +36,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/@ui/form";
-import { cn } from "@/lib/utils";
 import { useUpdateAccount } from "@/hooks/account/use-update-account";
+import { cn } from "@/lib/utils";
+import { notification } from "@/hooks/use-notification";
 
 function ProfileForm({ userData }: { userData: Account }) {
   const { updateAccount: handleUpdate, updateAccountPending } =
@@ -50,7 +51,7 @@ function ProfileForm({ userData }: { userData: Account }) {
       nome: userData.nome,
       email: userData.email,
       matricula: userData.matricula,
-      periodo: String(userData.periodo),
+      periodo: userData.periodo,
       cpf: userData.cpf,
       rg: userData.rg,
       cargo: userData.cargo,
@@ -81,9 +82,7 @@ function ProfileForm({ userData }: { userData: Account }) {
   };
 
   const updateAccount = () => {
-    setEdit(false);
     const { id_usuario, ...rest } = { ...userData };
-    rest.periodo = String(rest.periodo);
 
     // Compare objects by their properties
     const formValues = form.getValues();
@@ -95,13 +94,16 @@ function ProfileForm({ userData }: { userData: Account }) {
     });
 
     if (!hasChanges) {
-      // No changes, do nothing
+      notification.info("Nenhuma alteração foi executada.");
+      setEdit(false);
       return;
     }
 
     handleUpdate({
       id: id_usuario,
       payload: { ...formValues, periodo: +formValues.periodo! },
+    }).then(() => {
+      setEdit(false);
     });
   };
 

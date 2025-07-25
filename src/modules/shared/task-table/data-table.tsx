@@ -77,10 +77,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/@ui/table";
-import { CalendarDays, Search, Settings2 } from "lucide-react";
-import { Progress } from "@/components/@ui/progress";
+import { CalendarDays, Coins, Search, Settings2 } from "lucide-react";
 import { JustifyLatenessModal } from "@/components/@ui/justify-lateness-modal";
 import { CreateTaskDrawerContent } from "@/components/@ui/create-task-drawer";
+import { useAccount } from "@/hooks/account/use-account";
+import { isManagerUser } from "@/utils/manager";
 
 function DragHandle({ id }: { id: number }) {
   const { attributes, listeners } = useSortable({
@@ -105,7 +106,7 @@ const columns: ColumnDef<Task>[] = [
   {
     id: "drag",
     header: () => null,
-    cell: ({ row }) => <DragHandle id={row.original.id} />,
+    cell: ({ row }) => <DragHandle id={row.original.id_tarefa} />,
   },
   {
     id: "select",
@@ -148,12 +149,12 @@ const columns: ColumnDef<Task>[] = [
     header: "Status",
     cell: ({ row }) => (
       <Badge variant="outline" className="text-muted-foreground px-1.5">
-        {row.original.status === "Done" ? (
+        {row.original.status_tarefa ? (
           <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
         ) : (
           <IconLoader />
         )}
-        {row.original.status}
+        {row.original.status_tarefa ? "Concluída" : "Pendente"}
       </Badge>
     ),
   },
@@ -163,7 +164,7 @@ const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => (
       <span className="flex items-center gap-2">
         <CalendarDays className="size-4" />
-        {new Date(row.original.due_date).toLocaleDateString("pt-BR", {
+        {new Date(row.original.data_limite).toLocaleDateString("pt-BR", {
           day: "2-digit",
           month: "short",
           year: "numeric",
@@ -171,13 +172,25 @@ const columns: ColumnDef<Task>[] = [
       </span>
     ),
   },
+  // {
+  //   accessorKey: "level",
+  //   header: "Dificuldade",
+  //   cell: ({ row }) => (
+  //     <div className="flex flex-col items-center gap-1">
+  //       <span>{row.original.dificuldade}/5</span>
+  //       <Progress value={row.original.dificuldade * 20} className="w-[50%]" />
+  //     </div>
+  //   ),
+  // },
   {
-    accessorKey: "level",
-    header: "Dificuldade",
+    accessorKey: "coins",
+    header: "Moedas",
     cell: ({ row }) => (
-      <div className="flex flex-col items-center gap-1">
-        <span>{row.original.level}/5</span>
-        <Progress value={row.original.level * 20} className="w-[50%]" />
+      <div className="flex items-center gap-2">
+        <span className="text-lg font-semibold text-coin">
+          {row.original.quantidade_moedas}
+        </span>
+        <Coins className="size-5 text-coin" />
       </div>
     ),
   },
@@ -214,7 +227,7 @@ const columns: ColumnDef<Task>[] = [
 
 function DraggableRow({ row }: { row: Row<Task> }) {
   const { transform, transition, setNodeRef, isDragging } = useSortable({
-    id: row.original.id,
+    id: row.original.id_tarefa,
   });
 
   return (
@@ -264,7 +277,7 @@ export function TaskTable({
   );
 
   const dataIds = React.useMemo<UniqueIdentifier[]>(
-    () => data?.map(({ id }) => id) || [],
+    () => data?.map(({ id_tarefa }) => id_tarefa) || [],
     [data]
   );
 
@@ -278,7 +291,7 @@ export function TaskTable({
       columnFilters,
       pagination,
     },
-    getRowId: (row) => row.id.toString(),
+    getRowId: (row) => row.id_tarefa.toString(),
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -485,18 +498,20 @@ export function TaskTable({
 }
 
 function TableCellViewer({ item }: { item: Task }) {
+  const { account } = useAccount();
   const isMobile = useIsMobile();
+  const isManager = isManagerUser({ account });
 
   return (
     <Drawer direction={isMobile ? "bottom" : "right"}>
       <DrawerTrigger asChild>
         <Button variant="link" className="text-foreground w-fit px-0 text-left">
-          {item.title}
+          {item.titulo}
         </Button>
       </DrawerTrigger>
       <CreateTaskDrawerContent
         item={item}
-        edit
+        edit={isManager}
         onSubmitAction={(data) => console.log(data)}
       />
     </Drawer>

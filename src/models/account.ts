@@ -9,15 +9,13 @@ export const accountSchema = z.object({
     .string()
     .min(10, "Matrícula contém 10 dígitos")
     .max(10, "Matrícula deve conter 10 dígitos"),
-  periodo: z.string(),
+  periodo: z.coerce.number(),
   cpf: z
     .string()
     .refine((cpf: string) => !cpf.match(/[^\d]+/g), "Apenas números")
     .refine((cpf: string) => isValidCPF(cpf), "CPF inválido"),
   rg: z.string().min(8, "RG inválido").max(12, "RG inválido"),
-  cargo: z
-    .enum(["GESTOR_RH", "TECH_LEAD", "COLABORADOR"])
-    .default("COLABORADOR"),
+  cargo: z.enum(["GESTOR_RH", "TECH_LEAD", "COLABORADOR"]),
   status: z.boolean(),
 });
 

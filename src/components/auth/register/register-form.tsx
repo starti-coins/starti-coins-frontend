@@ -24,23 +24,25 @@ export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  return null;
+
   const router = useRouter();
 
-  const form = useForm<Account>({
-    resolver: zodResolver(accountSchema),
+  const form = useForm<Partial<Account>>({
+    resolver: zodResolver(accountSchema.partial()),
     defaultValues: {
       cpf: "",
       email: "",
       nome: "",
-      periodo: "",
+      periodo: 1,
       matricula: "",
       rg: "",
-      cargo: "",
+      cargo: "COLABORADOR",
       status: true,
     },
   });
 
-  const handleRegister = async (formData: Account) => {
+  const handleRegister = async (formData: Partial<Account>) => {
     try {
       const authService = new AuthService();
 
@@ -135,7 +137,7 @@ export function RegisterForm({
               )}
             />
 
-            <FormSelect<Account>
+            <FormSelect<Partial<Account>>
               name="periodo"
               label="Período atual"
               groupLabel="Períodos"

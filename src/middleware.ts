@@ -17,7 +17,7 @@ type PublicRoute =
 
 const publicRoutes: PublicRoute[] = [
   { path: "/login", action: "redirect" },
-  { path: "/register", action: "redirect" },
+  // { path: "/register", action: "redirect" },
   {
     path: "/forgot-password",
     action: "allow",

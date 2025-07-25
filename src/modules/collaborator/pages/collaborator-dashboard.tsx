@@ -5,6 +5,21 @@ import { SectionCards } from "../components/section-cards";
 import { Suspense } from "react";
 import { Spinner } from "@/components/@ui/spinner";
 import { TaskTable } from "../../shared/task-table/data-table";
+import { Task } from "@/models/task";
+
+const data = {
+  id_tarefa: 1,
+  titulo: "Tarefa 1",
+  descricao: "Descrição da tarefa 1",
+  status_tarefa: false,
+  id_projeto: 1,
+  dificuldade: 3,
+  data_limite: new Date(),
+  data_atribuicao: new Date(),
+  quantidade_horas: 2,
+  quantidade_moedas: 100,
+  id_responsavel: 1,
+} satisfies Task;
 
 function CollaboratorDashboard() {
   return (
@@ -15,7 +30,7 @@ function CollaboratorDashboard() {
             <SectionCards />
             <div className="mt-4">
               <Suspense fallback={<Spinner />}>
-                <TaskTable title="Tarefas a vencer" data={[]} />
+                <TaskTable title="Tarefas a vencer" data={[data]} />
               </Suspense>
             </div>
           </div>

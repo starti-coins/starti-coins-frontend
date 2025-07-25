@@ -118,12 +118,12 @@ export function LoginForm({
             Login
           </Button>
         </div>
-        <div className="text-center text-sm">
+        {/* <div className="text-center text-sm">
           Ainda não possui uma conta?{" "}
           <Link href="/register" className="underline underline-offset-4">
             Cadastre-se
           </Link>
-        </div>
+        </div> */}
       </form>
     </Form>
   );

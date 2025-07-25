@@ -28,6 +28,7 @@ import {
 } from "./form";
 import FormSelect from "./form-select";
 import { useRegisterAccount } from "@/hooks/account/use-register";
+import { z } from "zod";
 
 export function CreateUserDrawer({ children }: PropsWithChildren) {
   const { userDrawerOpen, setUserDrawerOpen } = useCreateUserDrawer();
@@ -50,6 +51,12 @@ export function CreateUserDrawer({ children }: PropsWithChildren) {
   );
 }
 
+const createUserSchema = accountSchema.omit({
+  id_usuario: true,
+});
+
+export type CreateUser = z.infer<typeof createUserSchema>;
+
 export const CreateTaskDrawerContent = ({
   edit = false,
   loading = false,
@@ -58,11 +65,10 @@ export const CreateTaskDrawerContent = ({
   item?: Account;
   edit?: boolean;
   loading?: boolean;
-  onSubmitAction: (data: Partial<Account>) => void;
+  onSubmitAction: (data: CreateUser) => void;
 }) => {
-  const partialSchema = accountSchema.partial();
-  const form = useForm<Partial<Account>>({
-    resolver: zodResolver(partialSchema),
+  const form = useForm<CreateUser>({
+    resolver: zodResolver(createUserSchema),
     defaultValues: {
       email: "",
       nome: "",
@@ -71,17 +77,15 @@ export const CreateTaskDrawerContent = ({
       status: true,
       rg: "",
       cargo: "COLABORADOR",
-      periodo: "",
+      periodo: 1,
     },
   });
 
-  const updateTask = () => {
+  const createUser = () => {
     const data = form.getValues();
-    delete data.id_usuario;
 
-    // @ts-expect-error parsing to a different type beecause Select can't handle integers
-    onSubmitAction({ ...data, periodo: +data.periodo! });
-    Object.keys(data).forEach((d) => form.resetField(d as keyof Account));
+    onSubmitAction(data);
+    Object.keys(data).forEach((d) => form.resetField(d as keyof CreateUser));
   };
 
   return (
@@ -96,7 +100,7 @@ export const CreateTaskDrawerContent = ({
       <div className="flex flex-col gap-4 overflow-y-auto p-4 text-sm h-full">
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(updateTask)}
+            onSubmit={form.handleSubmit(createUser)}
             className="flex flex-col gap-2 justify-between h-full"
           >
             <div className="flex flex-col gap-6">
@@ -145,7 +149,7 @@ export const CreateTaskDrawerContent = ({
                 />
               </div>
               <div className="flex flex-col gap-3">
-                <FormSelect<Partial<Account>>
+                <FormSelect<CreateUser>
                   name="cargo"
                   label="Cargo"
                   groupLabel="Cargos"
@@ -163,7 +167,7 @@ export const CreateTaskDrawerContent = ({
                 />
               </div>
               <div className="flex flex-col gap-3">
-                <FormSelect<Partial<Account>>
+                <FormSelect<CreateUser>
                   name="periodo"
                   label="Período"
                   groupLabel="Períodos"

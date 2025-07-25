@@ -1,17 +1,18 @@
 import { z } from "zod";
 
 export const taskSchema = z.object({
-  id: z.number(),
-  title: z.string().min(1, "Título é obrigatório"),
-  description: z.string().min(1, "Descrição é obrigatória"),
-  due_date: z.date(),
-  assignment_date: z.date().default(() => new Date()),
-  completion_date: z.date().optional(),
-  hours: z.number(),
-  coins: z.number().min(0, "Valor de moedas não pode ser negativo"),
-  status: z.string().min(1, "Status é obrigatório"),
-  responsible_id: z.string().optional(),
-  level: z
+  id_tarefa: z.number(),
+  titulo: z.string().min(1, "Título é obrigatório"),
+  descricao: z.string().min(1, "Descrição é obrigatória"),
+  data_limite: z.date().min(new Date(), "Data de entrega deve ser no futuro"),
+  data_atribuicao: z.date(),
+  data_envio: z.date().optional(),
+  quantidade_horas: z.coerce.number().min(1, "Deve ser pelo menos 1 hora"),
+  quantidade_moedas: z.coerce.number().min(1, "Deve ser pelo menos 1 moeda"),
+  status_tarefa: z.coerce.boolean(),
+  id_projeto: z.number().optional(),
+  id_responsavel: z.coerce.number().min(1, "Responsável é obrigatório"),
+  dificuldade: z
     .number()
     .min(1, "Nível deve ser pelo menos 1")
     .max(5, "Nível não pode ser maior que 5"),

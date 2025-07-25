@@ -23,7 +23,7 @@ type FormSelectProps<T extends Record<string, unknown>> = {
   name: FieldPath<T>;
   form: UseFormReturn<T>;
   label: string;
-  items: Array<{ value: string; label: string }>;
+  items: Array<{ value: string; label: string; disabled?: boolean }>;
   groupLabel?: string;
   className?: string;
   selectTriggerProps?: SelectProps;
@@ -46,9 +46,10 @@ function FormSelect<T extends Record<string, unknown>>({
         <FormItem>
           <FormLabel htmlFor="form-select">{label}</FormLabel>
           <Select
+            required
             onValueChange={field.onChange}
-            defaultValue={field.value as string}
-            value={field.value as string}
+            defaultValue={String(field.value)}
+            value={String(field.value)}
           >
             <FormControl>
               <SelectTrigger
@@ -69,7 +70,11 @@ function FormSelect<T extends Record<string, unknown>>({
               <SelectGroup>
                 <SelectLabel>{groupLabel}</SelectLabel>
                 {items.map((item) => (
-                  <SelectItem key={item.value} value={item.value}>
+                  <SelectItem
+                    key={item.value}
+                    value={item.value.toString()}
+                    disabled={item.disabled}
+                  >
                     {item.label}
                   </SelectItem>
                 ))}

@@ -16,7 +16,6 @@ import {
 } from "./drawer";
 import { Button } from "./button";
 import { Separator } from "./separator";
-import { Label } from "./label";
 import { Input } from "./input";
 import { Textarea } from "./textarea";
 import { FormDatePicker } from "./date-picker";
@@ -33,6 +32,7 @@ import {
 } from "./form";
 import FormSelect from "./form-select";
 import SliderTooltip from "./checkpoint-slider";
+import { z } from "zod";
 
 export function CreateTaskDrawer({ children }: PropsWithChildren) {
   const { taskDrawerOpen, setTaskDrawerOpen } = useCreateTaskDrawer();
@@ -53,6 +53,12 @@ export function CreateTaskDrawer({ children }: PropsWithChildren) {
   );
 }
 
+const createTaskSchema = taskSchema.omit({
+  id_tarefa: true,
+  data_atribuicao: true,
+});
+type CreateTask = z.infer<typeof createTaskSchema>;
+
 export const CreateTaskDrawerContent = ({
   item,
   edit = false,
@@ -60,31 +66,27 @@ export const CreateTaskDrawerContent = ({
 }: {
   item?: Task;
   edit?: boolean;
-  onSubmitAction: (data: Partial<Task>) => void;
+  onSubmitAction: (data: CreateTask) => void;
 }) => {
-  const partialSchema = taskSchema.partial();
-  const form = useForm<Partial<Task>>({
-    resolver: zodResolver(partialSchema),
+  const form = useForm<CreateTask>({
+    resolver: zodResolver(createTaskSchema),
     defaultValues: {
-      title: item?.title ?? "",
-      description: item?.description ?? "",
-      status: item?.status ?? "",
-      responsible_id: item?.responsible_id ?? "",
-      level: item?.level || 0,
-      due_date: item?.due_date,
-      assignment_date: item?.assignment_date,
-      completion_date: item?.completion_date,
-      hours: item?.hours || 0,
-      coins: item?.coins || 0,
+      titulo: item?.titulo || "",
+      descricao: item?.descricao || "",
+      data_limite: item?.data_limite,
+      quantidade_horas: item?.quantidade_horas || 0,
+      quantidade_moedas: item?.quantidade_moedas || 0,
+      status_tarefa: item?.status_tarefa || false,
+      id_responsavel: item?.id_responsavel || 0,
+      dificuldade: item?.dificuldade || 0,
     },
   });
 
   const updateTask = () => {
     const data = form.getValues();
-    delete data.id;
 
-    onSubmitAction(data);
-    Object.keys(data).forEach((d) => form.resetField(d as keyof Task));
+    onSubmitAction({ ...data, id_responsavel: +data.id_responsavel! });
+    Object.keys(data).forEach((d) => form.resetField(d as keyof CreateTask));
   };
 
   return (
@@ -106,14 +108,15 @@ export const CreateTaskDrawerContent = ({
               <div className="flex flex-col gap-3">
                 <FormField
                   control={form.control}
-                  name="title"
+                  name="titulo"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="title">Título</FormLabel>
+                      <FormLabel htmlFor="titulo">Título</FormLabel>
                       <FormControl>
                         <Input
-                          id="title"
+                          id="titulo"
                           type="text"
+                          placeholder="Título da tarefa"
                           disabled={!edit}
                           required
                           {...field}
@@ -127,13 +130,14 @@ export const CreateTaskDrawerContent = ({
               <div className="flex flex-col gap-3">
                 <FormField
                   control={form.control}
-                  name="description"
+                  name="descricao"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="description">Descrição</FormLabel>
+                      <FormLabel htmlFor="descricao">Descrição</FormLabel>
                       <FormControl>
                         <Textarea
-                          id="description"
+                          id="descricao"
+                          placeholder="Descrição da tarefa"
                           disabled={!edit}
                           required
                           {...field}
@@ -145,24 +149,20 @@ export const CreateTaskDrawerContent = ({
                 />
               </div>
               <div className="flex flex-col gap-3">
-                <FormSelect<Partial<Task>>
-                  name="status"
+                <FormSelect<CreateTask>
+                  name="status_tarefa"
                   label="Status"
                   groupLabel="Statuses"
                   form={form}
-                  selectTriggerProps={{
-                    disabled: !edit,
-                  }}
                   items={[
-                    { value: "Done", label: "Concluído" },
-                    { value: "In Process", label: "Em Andamento" },
-                    { value: "Not Started", label: "Não Iniciado" },
+                    { value: "true", label: "Concluído" },
+                    { value: "false", label: "Em Andamento" },
                   ]}
                 />
               </div>
               <div className="flex flex-col gap-3">
-                <FormSelect<Partial<Task>>
-                  name="responsible_id"
+                <FormSelect<CreateTask>
+                  name="id_responsavel"
                   label="Responsável"
                   groupLabel="Responsáveis"
                   form={form}
@@ -170,17 +170,18 @@ export const CreateTaskDrawerContent = ({
                     disabled: !edit,
                   }}
                   items={[
-                    { value: "user1", label: "User 1" },
-                    { value: "user2", label: "User 2" },
-                    { value: "user3", label: "User 3" },
-                    { value: "Eddie Lake", label: "Eddie Lake" },
+                    { value: "0", label: "Selecione", disabled: true },
+                    { value: "1", label: "User 1" },
+                    { value: "2", label: "User 2" },
+                    { value: "3", label: "User 3" },
+                    { value: "4", label: "Eddie Lake" },
                   ]}
                 />
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div className="flex flex-col gap-3">
-                  <FormDatePicker<Partial<Task>>
-                    name="due_date"
+                  <FormDatePicker<CreateTask>
+                    name="data_limite"
                     label="Data de entrega"
                     form={form}
                     buttonTriggerProps={{
@@ -201,16 +202,15 @@ export const CreateTaskDrawerContent = ({
                   </Tooltip>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <Label>Dificuldade</Label>
-
                   <FormField
                     control={form.control}
-                    name="level"
+                    name="dificuldade"
                     render={({ field }) => {
                       const { value, onChange } = field;
 
                       return (
                         <FormItem className="w-full">
+                          <FormLabel>Dificuldade</FormLabel>
                           <FormControl>
                             <div className="flex flex-col items-center gap-1 mx-4">
                               <span
@@ -220,7 +220,7 @@ export const CreateTaskDrawerContent = ({
                                     : "text-muted-foreground"
                                 }`}
                               >
-                                {form.getValues("level") || 0}/5
+                                {form.getValues("dificuldade") || 0}/5
                               </span>
                               <SliderTooltip
                                 id="SliderTemperature"
@@ -239,6 +239,56 @@ export const CreateTaskDrawerContent = ({
                         </FormItem>
                       );
                     }}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="flex flex-col gap-3">
+                  <FormField
+                    control={form.control}
+                    name="quantidade_horas"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormLabel htmlFor="quantidade_horas">Horas</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            id="quantidade_horas"
+                            placeholder="Horas estimadas"
+                            disabled={!edit}
+                            required
+                            onFocus={(e) => e.currentTarget.select()}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <FormField
+                    control={form.control}
+                    name="quantidade_moedas"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormLabel htmlFor="quantidade_moedas">
+                          Moedas
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            id="quantidade_moedas"
+                            placeholder="Qtd. moedas"
+                            disabled={!edit}
+                            required
+                            onFocus={(e) => e.currentTarget.select()}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
                 </div>
               </div>
