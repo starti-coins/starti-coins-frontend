@@ -13,12 +13,7 @@ import {
 } from "@/components/@ui/sidebar";
 import { LucideIcon } from "lucide-react";
 import Link from "next/link";
-
-const user = {
-  name: "shadcn",
-  email: "m@example.com",
-  avatar: "",
-};
+import { useAccount } from "@/hooks/account/use-account";
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   sidebarItems: {
@@ -29,6 +24,8 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
 };
 
 export function AppSidebar({ sidebarItems, ...props }: AppSidebarProps) {
+  const { account } = useAccount();
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -60,7 +57,12 @@ export function AppSidebar({ sidebarItems, ...props }: AppSidebarProps) {
         <NavMain items={sidebarItems} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser
+          user={{
+            name: account?.nome || "",
+            email: account?.email || "",
+          }}
+        />
       </SidebarFooter>
     </Sidebar>
   );

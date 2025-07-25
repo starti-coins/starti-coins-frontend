@@ -28,6 +28,8 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useMemo, useState } from "react";
+import React, { useCallback, useRef } from "react";
+import { toPng } from "html-to-image";
 
 // Dados mockados para o leaderboard
 const leaderboardData = [
@@ -149,10 +151,34 @@ const getPeriodColor = (period: string) => {
 };
 
 export default function MemberLeaderboard() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [showDownloadButton, setShowDownloadButton] = useState(true);
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     field: "position",
     direction: "asc",
   });
+
+  const downloadReport = useCallback(() => {
+    if (ref.current === null) {
+      return;
+    }
+
+    setShowDownloadButton(false);
+
+    toPng(ref.current, { cacheBust: true })
+      .then((dataUrl) => {
+        const link = document.createElement("a");
+        link.download = "report.png";
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setShowDownloadButton(true);
+      });
+  }, [ref]);
 
   const sortedData = useMemo(() => {
     const sorted = [...leaderboardData].sort((a, b) => {
@@ -217,7 +243,7 @@ export default function MemberLeaderboard() {
     );
   };
   return (
-    <div className="container">
+    <div ref={ref} className="container">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
@@ -225,12 +251,18 @@ export default function MemberLeaderboard() {
               <Trophy className="h-6 w-6 text-yellow-500" />
               Ranking de Produtividade
             </div>
-            <Button variant="dashed" className="ml-auto">
-              <div className="flex items-center gap-2 ">
-                <Download />
-                <span className="hidden sm:inline">Baixar relatório</span>
-              </div>
-            </Button>
+            {showDownloadButton && (
+              <Button
+                variant="dashed"
+                className="ml-auto"
+                onClick={downloadReport}
+              >
+                <div id="download-button" className="flex items-center gap-2">
+                  <Download />
+                  <span className="hidden sm:inline">Baixar relatório</span>
+                </div>
+              </Button>
+            )}
           </CardTitle>
           <CardDescription>
             Classificação dos colaboradores baseada em tarefas concluídas e
