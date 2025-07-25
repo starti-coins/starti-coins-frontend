@@ -32,7 +32,7 @@ const data = [
     quantidade_moedas: 100,
   },
   {
-    id_tarefa: 2,
+    id_tarefa: 3,
     titulo: "Tarefa 1",
     descricao: "Descrição da tarefa 1",
     status_tarefa: true,
