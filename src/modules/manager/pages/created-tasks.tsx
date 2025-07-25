@@ -20,8 +20,8 @@ const data = [
   },
   {
     id_tarefa: 2,
-    titulo: "Tarefa 1",
-    descricao: "Descrição da tarefa 1",
+    titulo: "Tarefa 2",
+    descricao: "Descrição da tarefa 2",
     status_tarefa: true,
     id_projeto: 1,
     dificuldade: 3,
@@ -33,8 +33,8 @@ const data = [
   },
   {
     id_tarefa: 3,
-    titulo: "Tarefa 1",
-    descricao: "Descrição da tarefa 1",
+    titulo: "Tarefa 3",
+    descricao: "Descrição da tarefa 3",
     status_tarefa: true,
     id_projeto: 1,
     dificuldade: 3,
