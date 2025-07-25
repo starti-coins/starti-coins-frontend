@@ -2,7 +2,6 @@ import Page from "@/components/@ui/page";
 import MemberLeaderboard from "../components/member-leaderboard";
 
 function MemberReports() {
-  return null;
   return (
     <Page>
       <h3 className="text-2xl font-medium">Relatórios de Membros</h3>

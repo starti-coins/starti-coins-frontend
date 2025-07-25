@@ -4,19 +4,47 @@ import { Suspense } from "react";
 import { TaskTable } from "../../shared/task-table/data-table";
 import { Task } from "@/models/task";
 
-const data = {
-  id_tarefa: 1,
-  titulo: "Tarefa 1",
-  descricao: "Descrição da tarefa 1",
-  status_tarefa: true,
-  id_projeto: 1,
-  dificuldade: 3,
-  data_limite: new Date(),
-  data_atribuicao: new Date(),
-  id_responsavel: 1,
-  quantidade_horas: 2,
-  quantidade_moedas: 100,
-} satisfies Task;
+const data = [
+  {
+    id_tarefa: 1,
+    titulo: "Tarefa 1",
+    descricao: "Descrição da tarefa 1",
+    status_tarefa: true,
+    id_projeto: 1,
+    dificuldade: 3,
+    data_limite: new Date(),
+    data_atribuicao: new Date(),
+    id_responsavel: 1,
+    quantidade_horas: 2,
+    quantidade_moedas: 100,
+  },
+  {
+    id_tarefa: 2,
+    titulo: "Tarefa 1",
+    descricao: "Descrição da tarefa 1",
+    status_tarefa: true,
+    id_projeto: 1,
+    dificuldade: 3,
+    data_limite: new Date(),
+    data_atribuicao: new Date(),
+    id_responsavel: 1,
+    quantidade_horas: 2,
+    quantidade_moedas: 100,
+  },
+  {
+    id_tarefa: 2,
+    titulo: "Tarefa 1",
+    descricao: "Descrição da tarefa 1",
+    status_tarefa: true,
+    id_projeto: 1,
+    dificuldade: 3,
+    data_limite: new Date(),
+    data_atribuicao: new Date(),
+    id_responsavel: 1,
+    quantidade_horas: 2,
+    quantidade_moedas: 100,
+  },
+] satisfies Task[];
 
 function CreatedTasks() {
   return (
@@ -28,7 +56,7 @@ function CreatedTasks() {
       </p>
       <div className="my-2">
         <Suspense fallback={<Spinner />}>
-          <TaskTable data={[data]} />
+          <TaskTable data={data} />
         </Suspense>
       </div>
     </Page>
