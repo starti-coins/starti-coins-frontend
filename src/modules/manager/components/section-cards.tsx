@@ -1,10 +1,10 @@
 import Image from "next/image";
-import { FileBadge, ListChecks, ListTodo, User, UserLock } from "lucide-react";
+import { ListChecks, ListTodo } from "lucide-react";
 import Statistics from "../../shared/statistics";
 
 export function SectionCards() {
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-12">
+    <div className="grid grid-cols-1 gap-4 justify-center lg:grid-cols-2 lg:gap-12">
       <Statistics.Container title="Tarefas">
         <Statistics.Item
           title="Atribuídas"
@@ -39,7 +39,7 @@ export function SectionCards() {
         />
       </Statistics.Container>
 
-      <Statistics.Container title="Projetos">
+      {/* <Statistics.Container title="Projetos">
         <Statistics.Item
           title="Projetos totais"
           statistic={50}
@@ -71,7 +71,7 @@ export function SectionCards() {
           statistic={50}
           icon={<UserLock size={28} className="text-slate-600" />}
         />
-      </Statistics.Container>
+      </Statistics.Container> */}
     </div>
   );
 }
