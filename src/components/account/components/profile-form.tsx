@@ -107,6 +107,8 @@ function ProfileForm({ userData }: { userData: Account }) {
     });
   };
 
+  const cargo = userData.cargo!.toLowerCase().replace("_", " ");
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(updateAccount)}>
@@ -155,7 +157,7 @@ function ProfileForm({ userData }: { userData: Account }) {
                       />
                     </CardTitle>
                     <CardDescription className={!edit ? "-mt-2" : ""}>
-                      Colaborador
+                      {cargo.charAt(0).toUpperCase() + cargo.slice(1)}
                     </CardDescription>
                   </div>
                 </div>
