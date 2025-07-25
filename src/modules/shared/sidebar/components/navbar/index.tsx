@@ -42,7 +42,7 @@ export function NavUser({
 
   const handleLogout = async () => {
     await logout().then(() => {
-      router.push("login");
+      router.push("/login");
     });
   };
 
@@ -97,8 +97,8 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Link href="perfil" className="flex items-center gap-2 w-full">
+              <DropdownMenuItem onSelect={() => router.push("/perfil")}>
+                <Link href="/perfil" className="flex items-center gap-2 w-full">
                   <IconUserCircle />
                   Conta
                 </Link>

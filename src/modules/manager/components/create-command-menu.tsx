@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { UserPlus } from "lucide-react";
 import { IconUserCircle } from "@tabler/icons-react";
 import {
@@ -35,6 +34,7 @@ export function CreateCommandMenu({ children, ...rest }: CommandMenuProps) {
   const { setUserDrawerOpen } = useCreateUserDrawer();
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const superKey = useSuperKey();
 
   const handleClickButton = () => {
@@ -115,16 +115,13 @@ export function CreateCommandMenu({ children, ...rest }: CommandMenuProps) {
           <CommandGroup heading="Navegar">
             <CommandItem
               disabled={pathname === "/perfil"}
-              onSelect={handleClickButton}
-              className="!p-0"
+              onSelect={() => router.push("/perfil")}
+              className="!p-0 cursor-pointer"
             >
-              <Link
-                href="/perfil"
-                className="w-full flex items-center gap-2 px-2 py-3"
-              >
+              <div className="w-full flex items-center gap-2 px-2 py-3">
                 <IconUserCircle />
                 <span>Conta</span>
-              </Link>
+              </div>
             </CommandItem>
           </CommandGroup>
         </CommandList>
